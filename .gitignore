@@ -1,0 +1,20 @@
+node_modules/
+.env
+.DS_Store
+*.log
+
+data/runtime.json
+data/globalPulseCache.json
+
+# Keep the folders in Git via .gitkeep, but ignore uploaded user media by default.
+videos/*
+!videos/.gitkeep
+staff/*
+!staff/.gitkeep
+!staff/Neil.jpg
+data/local-pulse-media/*
+!data/local-pulse-media/.gitkeep
+
+# Local lab branding uploaded from the Remote screen.
+branding/logo.png
+data/weatherCache.json

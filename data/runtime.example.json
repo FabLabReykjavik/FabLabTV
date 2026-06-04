@@ -1,0 +1,12 @@
+{
+  "selectedStaffFilename": null,
+  "currentVideoIndex": 0,
+  "announcement": "",
+  "nowPlayingOverride": null,
+  "audio": {
+    "requested": false,
+    "enabled": false,
+    "muted": true
+  },
+  "updatedAt": null
+}

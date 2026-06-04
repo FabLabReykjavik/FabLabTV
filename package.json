@@ -1,0 +1,37 @@
+{
+  "name": "fablab-tv",
+  "version": "0.1.0",
+  "description": "A digital TV station for Fab Labs: project videos, staff on call, local announcements, weather, tech news, and global Fab community updates.",
+  "main": "server/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js"
+  },
+  "keywords": [
+    "fab-lab",
+    "digital-signage",
+    "kiosk",
+    "dashboard",
+    "fab-academy"
+  ],
+  "author": "Andri Sæmundsson, Fab Lab Reykjavík",
+  "license": "MIT",
+  "dependencies": {
+    "chokidar": "^3.6.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FabLabReykjavik/FabLabTV.git"
+  },
+  "bugs": {
+    "url": "https://github.com/FabLabReykjavik/FabLabTV/issues"
+  },
+  "homepage": "https://github.com/FabLabReykjavik/FabLabTV#readme"
+}

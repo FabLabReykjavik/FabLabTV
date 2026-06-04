@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FabLabTV Screen</title>
+  <link rel="stylesheet" href="/css/screen.css" />
+</head>
+<body>
+  <main class="broadcast">
+    <section class="main-stage">
+      <div class="station-logo">
+          <img src="/branding/current-logo.png" alt="Logo">
+      </div>
+      <video id="mainVideo" autoplay playsinline></video>
+      <div class="audio-enable-overlay is-hidden" id="audioEnableOverlay">
+        <div class="audio-enable-card">
+          <div class="audio-enable-icon">🔊</div>
+          <h2>Enable TV audio</h2>
+          <p>Click once on this TV screen to allow FabLabTV to play videos with sound.</p>
+          <button id="enableAudioOnTv" type="button">Enable Audio</button>
+        </div>
+      </div>
+      <div class="video-empty" id="videoEmpty">Add videos to videos/ or turn on streaming highlights in Remote.</div>
+    </section>
+
+    <aside class="side-panel">
+      <section class="on-call-card">
+        <div class="eyebrow">On Call</div>
+        <img id="staffImage" alt="" />
+        <h1 id="staffName">No staff found</h1>
+        <p id="staffStatus">Available for lab support</p>
+      </section>
+
+      <section class="news-card">
+        <div class="eyebrow">Tech News</div>
+        <div id="newsContent" class="news-content">
+          <h2 id="newsHeadline">Loading…</h2>
+          <p id="newsBody">FabLabTV is starting.</p>
+        </div>
+      </section>
+    </aside>
+
+    <footer class="lower-third">
+      <div class="now-box">
+        <span class="label">Now Playing</span>
+        <strong id="nowPlaying">Fab Academy Projects</strong>
+        <div id="nowPlayingType" class="now-type">
+          Fab Academy Project Showcase
+        </div>
+      </div>
+
+      <div class="pulse pulse-global" id="globalPulse">
+        <div class="pulse-label">Global Pulse</div>
+        <div class="pulse-content"></div>
+      </div>
+      <div class="pulse pulse-local" id="localPulse">
+        <div class="pulse-label">Local Pulse</div>
+        <div class="pulse-content"></div>
+      </div>
+
+      <div class="clock" id="clock"></div>
+    </footer>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/screen.js"></script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FabLabTV Remote</title>
+  <link rel="stylesheet" href="/css/remote.css" />
+</head>
+<body>
+  <main class="remote">
+    <header>
+      <h1>FabLabTV Remote</h1>
+      <p>Simple controls for staff.</p>
+    </header>
+
+    <section class="panel staff-control-panel">
+      <h2>Who is on call?</h2>
+      <p>Select the staff member currently available on the TV. Each staff member can also have saved profile text, such as pronouns, specialties, or support notes.</p>
+      <div id="staffList" class="staff-list"></div>
+
+      <button id="showAddStaff" class="secondary reveal-button" type="button">Add staff member</button>
+      <div id="addStaffPanel" class="upload-box add-staff-panel is-hidden">
+        <h3>Add staff member</h3>
+        <p>Upload a staff photo into the local <strong>staff/</strong> folder. The display name is taken from the image filename, and the profile text is saved for this person.</p>
+        <div class="form-grid single">
+          <label>Staff display name<input id="staffUploadName" placeholder="Jane Doe" /></label>
+          <label>Small label next to name<input id="staffUploadStatusLabel" placeholder="On Call, she/her, they/them, Electronics..." /></label>
+          <label>Profile text<textarea id="staffUploadNote" placeholder="Example: Electronics, laser cutting, 3D printing"></textarea></label>
+          <label>Staff image<input id="staffUpload" type="file" accept="image/png,image/jpeg,image/webp" /></label>
+        </div>
+        <button id="uploadStaff" class="secondary" type="button">Add staff member to this TV</button>
+        <p id="staffUploadStatus" class="upload-status"></p>
+      </div>
+    </section>
+
+    <section class="panel video-control-panel">
+      <div class="panel-heading">
+        <div>
+          <h2>Video</h2>
+          <p>Control what is playing on the TV and choose where videos come from.</p>
+        </div>
+      </div>
+
+      <div class="video-source-box primary-video-sources">
+        <h3>Normal TV playlist</h3>
+        <p class="section-help">Choose what the TV plays automatically. Changes save immediately and videos are always shuffled.</p>
+        <div class="source-toggle-grid">
+          <label class="source-toggle-card">
+            <input id="localVideosEnabled" type="checkbox" />
+            <span>
+              <strong>Local uploaded videos</strong>
+              <small>Videos stored in this FabLabTV project’s local <strong>videos/</strong> folder.</small>
+            </span>
+          </label>
+          <label class="source-toggle-card">
+            <input id="fabHighlightsEnabled" type="checkbox" />
+            <span>
+              <strong>Stream all Fab Academy Highlights</strong>
+              <small>Curated highlight videos from the bundled Fab Academy highlights catalog.</small>
+            </span>
+          </label>
+        </div>
+        <p id="videoSourcesStatus" class="upload-status auto-save-status"></p>
+      </div>
+
+      <div class="now-playing-remote" id="remoteNowPlaying">
+        <span class="muted">Nothing playing yet</span>
+      </div>
+
+      <div class="remote-video-actions transport-controls">
+        <button id="previousVideo" class="secondary" type="button">Previous</button>
+        <button id="pauseVideo" type="button">Play / Pause</button>
+        <button id="nextVideo" class="secondary" type="button">Next</button>
+      </div>
+      <div class="remote-video-actions audio-controls">
+        <button id="audioToggle" class="secondary" type="button">Enable TV audio</button>
+      </div>
+      <p id="audioSetupNotice" class="audio-setup-notice is-hidden"></p>
+      <p id="videoCount" class="video-count"></p>
+
+      <div class="streaming-playlist-box highlight-search-box">
+        <h3>Play one Fab Academy highlight now</h3>
+        <p>Search by student, lab, year, or award. Matching videos appear below; click one to play it once on the TV.</p>
+        <label>Search highlight videos
+          <input id="fabVideoSearch" placeholder="Example: reykjavik, 2025, mechanism..." autocomplete="off" />
+        </label>
+        <div id="fabPlaylistSummary" class="playlist-summary"></div>
+        <div id="fabVideoCatalog" class="fab-video-catalog"></div>
+      </div>
+
+      <div class="upload-box local-upload-box">
+        <h3>Add a local video</h3>
+        <p>This uploads a video file into this project’s local <strong>videos/</strong> folder. These videos become part of the normal shuffled TV playlist.</p>
+        <input id="videoUpload" type="file" accept="video/mp4,video/webm,video/quicktime,.m4v" />
+        <button id="uploadVideo" class="secondary" type="button">Upload local video to this TV</button>
+        <p id="videoUploadStatus" class="upload-status"></p>
+      </div>
+    </section>
+
+    <section class="panel branding-control-panel">
+      <h2>Branding</h2>
+      <p>FabLabTV uses the built-in <strong>branding/fablab.png</strong> logo unless your lab uploads its own logo. Uploaded logos are saved as <strong>branding/logo.png</strong>.</p>
+      <div class="branding-preview-row">
+        <img id="brandingLogoPreview" class="branding-logo-preview" src="/branding/current-logo.png" alt="Current TV logo" />
+        <div class="upload-box inline-upload-box">
+          <h3>Upload lab logo</h3>
+          <p>Transparent PNG works best. This replaces the custom TV logo without changing the default FabLabTV fallback.</p>
+          <input id="logoUpload" type="file" accept="image/png" />
+          <button id="uploadLogo" class="secondary" type="button">Upload logo to TV</button>
+          <p id="logoUploadStatus" class="upload-status"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Language</h2>
+      <p>Choose the language used for system labels on the TV screen. Staff-written messages and workshop text are not translated automatically.</p>
+      <div class="form-grid single">
+        <label>Screen language<select id="languageSelect"></select></label>
+      </div>
+      <button id="saveLanguage">Save language</button>
+
+      <details class="label-editor-wrap">
+        <summary>Edit translated labels for this language</summary>
+        <p>Use these fields to override wording that does not sound natural for your lab.</p>
+        <div id="labelEditor" class="label-editor"></div>
+        <button id="saveLabels">Save label text</button>
+      </details>
+    </section>
+
+    <section class="panel">
+      <h2>Local Pulse Weather</h2>
+      <p>Choose the weather location shown in Local Pulse. Use decimal latitude/longitude.</p>
+      <div class="form-grid">
+        <label>Location name<input id="weatherLocation" placeholder="Reykjavik" /></label>
+        <label>Latitude<input id="weatherLatitude" type="number" step="0.0001" placeholder="64.1466" /></label>
+        <label>Longitude<input id="weatherLongitude" type="number" step="0.0001" placeholder="-21.9426" /></label>
+      </div>
+      <button id="saveWeather">Save weather location</button>
+    </section>
+
+    <section class="panel">
+      <h2>Opening Hours</h2>
+      <p>Leave a day empty to show it as closed.</p>
+      <div id="openingHoursEditor" class="opening-hours-editor"></div>
+      <button id="saveOpeningHours">Save opening hours</button>
+    </section>
+
+    <section class="panel">
+      <h2>Custom Local Messages</h2>
+      <div id="messageList" class="editable-list"></div>
+      <div class="form-grid single">
+        <label>Title<input id="messageTitle" placeholder="Temporary notice" /></label>
+        <label>Message<textarea id="messageBody" placeholder="Message to show on the TV"></textarea></label>
+        <label>Optional image<input id="messageImage" type="file" accept="image/png,image/jpeg,image/webp,image/gif" /></label>
+      </div>
+      <button id="addMessage">Add message</button>
+      <p id="messageUploadStatus" class="upload-status"></p>
+    </section>
+
+    <section class="panel">
+      <h2>Upcoming Workshops</h2>
+      <div id="workshopList" class="editable-list"></div>
+      <div class="form-grid single">
+        <label>Title<input id="workshopTitle" placeholder="Intro to laser cutting" /></label>
+        <label>Details<textarea id="workshopBody" placeholder="Thursday at 16:00"></textarea></label>
+      </div>
+      <button id="addWorkshop">Add workshop</button>
+    </section>
+
+    <section class="panel">
+      <h2>Tech News History</h2>
+      <div id="newsHistory" class="news-history"></div>
+    </section>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/remote.js"></script>
+</body>
+</html>

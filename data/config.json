@@ -1,0 +1,47 @@
+{
+  "labName": "Fab Lab",
+  "stationName": "FabLabTV",
+  "tagline": "Live from the lab",
+  "logo": "/branding/current-logo.png",
+  "timezone": "Atlantic/Reykjavik",
+  "rotationSeconds": 20,
+  "newsRotationSeconds": 12,
+  "labPulseRotationSeconds": 18,
+  "videoAutoplay": true,
+  "videoObjectFit": "cover",
+  "enableWeather": true,
+  "enableNews": true,
+  "enableVisitorStats": true,
+  "enableMachineStats": true,
+  "enableAnnouncements": true,
+  "newsHeadlines": [
+    "Welcome to FabLabTV",
+    "Fab Academy project videos are playing now",
+    "Use the remote page to change the on-call staff member",
+    "Lab Pulse will show visitors, machines and weather"
+  ],
+  "news": {
+    "provider": "hackernews",
+    "refreshMinutes": 20,
+    "maxItems": 8,
+    "minScore": 20,
+    "scanLimit": 40,
+    "fallbackHeadlines": [
+      "Welcome to FabLabTV",
+      "Fab Academy project videos are playing now"
+    ]
+  },
+  "weather": {
+    "provider": "openmeteo",
+    "location": "Reykjavik",
+    "latitude": 64.1466,
+    "longitude": -21.9426,
+    "refreshMinutes": 60
+  },
+  "visitorStats": {
+    "provider": "placeholder"
+  },
+  "machineStats": {
+    "provider": "placeholder"
+  }
+}
