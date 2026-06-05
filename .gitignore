@@ -21,3 +21,6 @@ data/local-pulse-media/*
 # Local lab branding uploaded from the Remote screen.
 branding/logo.png
 data/weatherCache.json
+
+# Local video source settings managed from the Remote screen.
+data/videoSources.json

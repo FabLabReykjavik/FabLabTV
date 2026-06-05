@@ -7,6 +7,7 @@ import path from "node:path";
 import { config } from "./config.js";
 
 const videoSourcesPath = path.join(config.dataDir, "videoSources.json");
+const videoSourcesExamplePath = path.join(config.dataDir, "videoSources.example.json");
 const fabAcademyHighlightsPath = path.join(config.dataDir, "fabAcademyHighlights.json");
 const staffProfilesPath = path.join(config.dataDir, "staffProfiles.json");
 
@@ -99,7 +100,9 @@ function normalizeVideoSourcesConfig(value = {}) {
 }
 
 export async function loadVideoSourcesConfig() {
-  return normalizeVideoSourcesConfig(await readJsonFile(videoSourcesPath, defaultVideoSources));
+  const defaultConfig = await readJsonFile(videoSourcesExamplePath, defaultVideoSources);
+  const runtimeConfig = await readJsonFile(videoSourcesPath, defaultConfig);
+  return normalizeVideoSourcesConfig(runtimeConfig);
 }
 
 export async function saveVideoSourcesConfig(value) {
