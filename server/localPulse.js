@@ -9,6 +9,7 @@ import { getWeather } from "./services/weatherService.js";
 import { createTranslator, getLocale } from "./i18n.js";
 
 const localPulseFile = path.join(config.dataDir, "localPulse.json");
+const localPulseExampleFile = path.join(config.dataDir, "localPulse.example.json");
 
 const dayNames = [
   "sunday",
@@ -74,8 +75,9 @@ function mergeLocalPulseConfig(userConfig = {}) {
 }
 
 export async function loadLocalPulseConfig() {
-  const userConfig = await readJsonFile(localPulseFile, {});
-  return mergeLocalPulseConfig(userConfig);
+  const defaultConfig = await readJsonFile(localPulseExampleFile, defaultLocalPulse);
+  const runtimeConfig = await readJsonFile(localPulseFile, defaultConfig);
+  return mergeLocalPulseConfig(runtimeConfig);
 }
 
 export async function saveLocalPulseConfig(nextConfig) {
