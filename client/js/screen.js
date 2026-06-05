@@ -524,7 +524,15 @@ video.addEventListener("ended", () => {
 });
 
 video.addEventListener("error", () => {
-  setTimeout(() => playVideo(currentVideoIndex + 1), 1200);
+  const failedUrl = currentVideoUrl;
+  console.warn("FabLabTV video failed, skipping to next video:", failedUrl);
+
+  setTimeout(() => {
+    if (currentVideoUrl === failedUrl) {
+      isOneTimeVideo = false;
+      playVideo(currentVideoIndex + 1, { force: true, notify: true });
+    }
+  }, 1200);
 });
 
 socket.on("status", renderStatus);
