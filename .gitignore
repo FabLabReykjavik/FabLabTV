@@ -5,6 +5,7 @@ node_modules/
 
 data/runtime.json
 data/globalPulseCache.json
+data/slide-cache/
 
 # Local runtime settings managed from the Remote screen.
 data/userSettings.json

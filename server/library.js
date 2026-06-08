@@ -5,6 +5,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
+import * as pdfjsLib from "pdfjs-dist/legacy/build/pdf.mjs";
+import { createCanvas } from "@napi-rs/canvas";
+
 import { config } from "./config.js";
 import { isLabOpenNow, loadLocalPulseConfig } from "./localPulse.js";
 
@@ -176,7 +179,11 @@ async function getLocalVideoLibrary() {
 }
 
 function safeCacheName(filename) {
-  return Buffer.from(filename).toString("base64url");
+  return stripExtension(filename)
+    .replace(/[<>:"/\\|?*\x00-\x1F]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 80) || "pdf-slide";
 }
 
 function getPdfCacheDir(filename) {
@@ -197,9 +204,62 @@ async function listCachedPdfPages(filename) {
   }
 }
 
+const pdfRenderJobs = new Map();
+
 async function renderPdfToCache(filename) {
-  console.log(`[Slides] PDF rendering not implemented yet: ${filename}`);
-  return [];
+  if (pdfRenderJobs.has(filename)) {
+    return await pdfRenderJobs.get(filename);
+  }
+
+  const renderJob = renderPdfToCacheUncached(filename);
+  pdfRenderJobs.set(filename, renderJob);
+
+  try {
+    return await renderJob;
+  } finally {
+    pdfRenderJobs.delete(filename);
+  }
+}
+
+async function renderPdfToCacheUncached(filename) {
+  const sourcePath = path.join(config.slidesDir, filename);
+  const cacheDir = getPdfCacheDir(filename);
+
+  await fs.mkdir(cacheDir, { recursive: true });
+
+  console.log(`[Slides] Generating PDF cache: ${filename}`);
+
+  try {
+    const data = await fs.readFile(sourcePath);
+    const pdf = await pdfjsLib.getDocument({
+      data: new Uint8Array(data),
+      useWorkerFetch: false,
+      isEvalSupported: false,
+      disableFontFace: true
+    }).promise;
+
+    for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+      const page = await pdf.getPage(pageNumber);
+      const viewport = page.getViewport({ scale: 2 });
+      const canvas = createCanvas(Math.ceil(viewport.width), Math.ceil(viewport.height));
+      const context = canvas.getContext("2d");
+
+      await page.render({
+        canvasContext: context,
+        viewport
+      }).promise;
+
+      const outputPath = path.join(cacheDir, `page-${pageNumber}.png`);
+      await fs.writeFile(outputPath, canvas.toBuffer("image/png"));
+    }
+
+    console.log(`[Slides] Cached ${pdf.numPages} pages from ${filename}`);
+
+    return await listCachedPdfPages(filename);
+  } catch (error) {
+    console.error(`[Slides] Failed to cache PDF ${filename}: ${error.message}`);
+    return [];
+  }
 }
 
 export async function getLocalSlideLibrary() {
@@ -220,19 +280,35 @@ export async function getLocalSlideLibrary() {
     (file) => path.extname(file).toLowerCase() === ".pdf"
   );
 
-  const pdfSlides = [];
-
-  for (const pdfFile of pdfFiles) {
-    //pdef rendering will be added here
-  }
-
-  return imageFiles.map((file) => ({
+  const imageSlides = imageFiles.map((file) => ({
     id: `slide-${Buffer.from(file).toString("base64url")}`,
     source: "slide",
     title: niceNameFromFilename(file),
     filename: file,
     url: `/media/slides/${encodeURIComponent(file)}`
   }));
+
+  const pdfSlides = [];
+
+  for (const pdfFile of pdfFiles) {
+    let pages = await listCachedPdfPages(pdfFile);
+
+    if (!pages.length) {
+      pages = await renderPdfToCache(pdfFile);
+    }
+
+    for (const [index, page] of pages.entries()) {
+      pdfSlides.push({
+        id: `slide-pdf-${Buffer.from(`${pdfFile}-${page.file}`).toString("base64url")}`,
+        source: "slide",
+        title: `${niceNameFromFilename(pdfFile)} — Page ${index + 1}`,
+        filename: pdfFile,
+        url: `/media/slide-cache/${encodeURIComponent(safeCacheName(pdfFile))}/${encodeURIComponent(page.file)}`
+      });
+    }
+  }
+
+  return [...imageSlides, ...pdfSlides];
 }
 
 function formatFabAcademyVideo(item, index) {
