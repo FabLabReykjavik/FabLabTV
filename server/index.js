@@ -109,7 +109,7 @@ function sanitizeUploadFilename(filename, fallbackBase) {
   const original = cleanText(filename);
   const parsed = path.parse(original);
   const safeBase = (parsed.name || fallbackBase)
-    .replace(/[^a-zA-Z0-9 _.-]/g, "")
+    .replace(/[<>:"/\\|?*\x00-\x1F]/g, "")
     .replace(/\s+/g, " ")
     .trim()
     .slice(0, 80) || fallbackBase;
@@ -255,6 +255,12 @@ app.post("/api/upload/video", uploadFileToFolder({
   directory: config.videosDir,
   allowedExtensions: [".mp4", ".webm", ".mov", ".m4v"],
   fallbackBase: "video"
+}));
+
+app.post("/api/upload/slide", uploadFileToFolder({
+  directory: config.slidesDir,
+  allowedExtensions: [".jpg", ".jpeg", ".png", ".webp", ".gif", ".pdf"],
+  fallbackBase: "slide"
 }));
 
 app.post("/api/upload/staff", uploadFileToFolder({
