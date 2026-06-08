@@ -39,6 +39,7 @@ const newsHistory = document.querySelector("#newsHistory");
 const highlightPlaybackStatus = document.querySelector("#highlightPlaybackStatus");
 const playlistMixStatus = document.querySelector("#playlistMixStatus");
 const playlistInventoryStatus = document.querySelector("#playlistInventoryStatus");
+const slideInventoryStatus = document.querySelector("#slideInventoryStatus");
 
 const languageSelect = document.querySelector("#languageSelect");
 const saveLanguage = document.querySelector("#saveLanguage");
@@ -347,6 +348,25 @@ function renderPlaylistInventoryStatus(status) {
   `;
 }
 
+function renderSlideInventoryStatus(status) {
+  if (!slideInventoryStatus) return;
+
+  const slides = status.slides || [];
+
+  if (!slides.length) {
+    slideInventoryStatus.innerHTML = `
+      <strong>Slides</strong>
+      <small>No slides found. Add images to slides/.</small>
+    `;
+    return;
+  }
+
+  slideInventoryStatus.innerHTML = `
+    <strong>Slides</strong>
+    <small>${slides.map((slide) => escapeHtml(slide.title || slide.filename)).join("<br>")}</small>
+  `;
+}
+
 function renderFabVideoCatalog(items = latestStatus?.fabAcademyHighlights?.items || []) {
   if (!fabVideoCatalog || !fabPlaylistSummary) return;
 
@@ -580,6 +600,7 @@ function render(status) {
   renderHighlightPlaybackStatus(status);
   renderPlaylistMixStatus(status);
   renderPlaylistInventoryStatus(status);
+  renderSlideInventoryStatus(status);
 
   staffList.innerHTML = "";
   for (const person of status.staff) {
