@@ -205,7 +205,8 @@ export const defaultUserSettings = {
   language: "en-US",
   layout: {
     showClock: true,
-    showTechNews: true
+    showTechNews: true,
+    showStaff: true
   }
 };
 

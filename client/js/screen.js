@@ -6,6 +6,7 @@ const socket = io();
 
 const video = document.querySelector("#mainVideo");
 const videoEmpty = document.querySelector("#videoEmpty");
+const onCallCard = document.querySelector(".on-call-card");
 const staffImage = document.querySelector("#staffImage");
 const staffName = document.querySelector("#staffName");
 const staffStatus = document.querySelector("#staffStatus");
@@ -48,6 +49,7 @@ function applyLayoutSettings(status) {
   const layout = status?.i18n?.layout || {};
   setBlockVisibility(clock, layout.showClock !== false);
   setBlockVisibility(newsCard, layout.showTechNews !== false);
+  setBlockVisibility(onCallCard, layout.showStaff !== false);
 }
 
 const manualDateNames = {
