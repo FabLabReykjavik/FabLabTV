@@ -68,6 +68,13 @@ app.use("/media/videos", express.static(config.videosDir, {
   }
 }));
 
+app.use("/media/slides", express.static(config.slidesDir, {
+  fallthrough: true,
+  setHeaders(res) {
+    res.setHeader("Cache-Control", "public, max-age=3600");
+  }
+}));
+
 app.use("/media/staff", express.static(config.staffDir, {
   fallthrough: true,
   setHeaders(res) {
