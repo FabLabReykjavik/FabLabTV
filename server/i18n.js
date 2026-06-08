@@ -211,6 +211,9 @@ export const defaultUserSettings = {
     showLocalPulse: true,
     showNowPlaying: true,
     showLogo: true
+  },
+  slides: {
+    durationSeconds: 10
   }
 };
 
@@ -245,6 +248,10 @@ function mergeI18nConfig(userConfig = {}, userSettings = {}) {
     layout: {
       ...defaultUserSettings.layout,
       ...(userSettings.layout || {})
+    },
+    slides: {
+      ...defaultUserSettings.slides,
+      ...(userSettings.slides || {})
     }
   };
 }

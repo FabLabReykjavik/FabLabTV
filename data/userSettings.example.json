@@ -8,5 +8,8 @@
     "showLocalPulse": true,
     "showNowPlaying": true,
     "showLogo": true
+  },
+  "slides": {
+    "durationSeconds": 10
   }
 }

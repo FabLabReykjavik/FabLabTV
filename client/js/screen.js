@@ -230,6 +230,13 @@ function stopSlideRotation() {
   }
 }
 
+function getSlideDurationMs() {
+  const seconds = Number(statusCache?.i18n?.slides?.durationSeconds);
+  return Number.isFinite(seconds)
+    ? Math.max(1, seconds) * 1000
+    : 10000;
+}
+
 function startSlideRotation() {
   stopSlideRotation();
 
@@ -244,7 +251,7 @@ function startSlideRotation() {
   slideTimer = setInterval(() => {
     currentSlideIndex = (currentSlideIndex + 1) % slides.length;
     showSlideDisplay(slides[currentSlideIndex]);
-  }, 10000);
+  }, getSlideDurationMs());
 }
 
 function playVideoItem(item, { oneTime = false } = {}) {
