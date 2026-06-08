@@ -6,6 +6,7 @@ const socket = io();
 
 const video = document.querySelector("#mainVideo");
 const videoEmpty = document.querySelector("#videoEmpty");
+const slide = document.querySelector("#mainSlide");
 const onCallCard = document.querySelector(".on-call-card");
 const staffImage = document.querySelector("#staffImage");
 const staffName = document.querySelector("#staffName");
