@@ -214,7 +214,8 @@ export const defaultUserSettings = {
   },
   slides: {
     enabled: true,
-    durationSeconds: 10
+    durationSeconds: 10,
+    slidesPerCycle: 1
   }
 };
 

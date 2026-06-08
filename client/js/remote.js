@@ -56,6 +56,7 @@ const showLogoToggle = document.querySelector("#showLogoToggle");
 
 const slideDurationSeconds = document.querySelector("#slideDurationSeconds");
 const slidesEnabled = document.querySelector("#slidesEnabled");
+const slidesPerCycle = document.querySelector("#slidesPerCycle");
 
 const slides = status.slides || [];
 const slideSettings = status.i18n?.slides || {};
@@ -496,6 +497,11 @@ function renderLanguageControls(status) {
     slideDurationSeconds.value = i18n.slides?.durationSeconds ?? 10;
     slideDurationSeconds.disabled = i18n.slides?.enabled === false;
   }
+
+  if (slidesPerCycle) {
+    slidesPerCycle.value = i18n.slides?.slidesPerCycle ?? 1;
+    slidesPerCycle.disabled = i18n.slides?.enabled === false;
+  }
 }
 
 function renderNewsHistory(newsItems) {
@@ -784,6 +790,12 @@ slidesEnabled?.addEventListener("change", async () => {
 slideDurationSeconds?.addEventListener("change", async () => {
   await putJson("/api/settings/slides", {
     durationSeconds: Number(slideDurationSeconds.value) || 10
+  });
+});
+
+slidesPerCycle?.addEventListener("change", async () => {
+  await putJson("/api/settings/slides", {
+    slidesPerCycle: Number(slidesPerCycle.value) || 0
   });
 });
 
