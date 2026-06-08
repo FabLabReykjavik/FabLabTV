@@ -9,6 +9,7 @@ export const config = {
   port: process.env.PORT || 3000,
   projectRoot,
   videosDir: path.join(projectRoot, "videos"),
+  slidesDir: path.join(projectRoot, "slides"),
   staffDir: path.join(projectRoot, "staff"),
   clientDir: path.join(projectRoot, "client"),
   dataDir: path.join(projectRoot, "data"),

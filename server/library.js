@@ -170,6 +170,24 @@ async function getLocalVideoLibrary() {
   }));
 }
 
+export async function getLocalSlideLibrary() {
+  const files = await listFiles(config.slidesDir, [
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".webp",
+    ".gif"
+  ]);
+
+  return files.map((file) => ({
+    id: `slide-${Buffer.from(file).toString("base64url")}`,
+    source: "slide",
+    title: niceNameFromFilename(file),
+    filename: file,
+    url: `/media/slides/${encodeURIComponent(file)}`
+  }));
+}
+
 function formatFabAcademyVideo(item, index) {
   const labName = niceNameFromFilename(item.lab || "Fab Academy");
   const title = item.title || niceNameFromFilename(item.student || "Fab Academy Highlight");

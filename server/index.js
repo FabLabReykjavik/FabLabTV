@@ -15,7 +15,17 @@ import { getNewsItems } from "./services/newsService.js";
 import { loadAppConfig } from "./models/configModel.js";
 
 import { config } from "./config.js";
-import { getVideoLibrary, getStaffLibrary, loadVideoSourcesConfig, saveVideoSourcesConfig, getFabAcademyHighlightsSummary, getFabAcademyHighlightById, updateStaffProfile, deleteStaffProfile } from "./library.js";
+import {
+  getVideoLibrary,
+  getLocalSlideLibrary,
+  getStaffLibrary,
+  loadVideoSourcesConfig,
+  saveVideoSourcesConfig,
+  getFabAcademyHighlightsSummary,
+  getFabAcademyHighlightById,
+  updateStaffProfile,
+  deleteStaffProfile
+} from "./library.js";
 import { loadState, saveState } from "./state.js";
 import { getGlobalPulse, startGlobalPulseRefresh } from "./globalPulse.js";
 import { getLocalPulse, loadLocalPulseConfig, saveLocalPulseConfig, isLabOpenNow } from "./localPulse.js";
@@ -168,7 +178,10 @@ async function buildStatus() {
     appConfig.timezone || "Atlantic/Reykjavik"
   );
 
-  const videos = await getVideoLibrary();
+  const [videos, slides] = await Promise.all([
+    getVideoLibrary(),
+    getLocalSlideLibrary()
+  ]);
 
   const [globalPulse, localPulse] = await Promise.all([
     getGlobalPulse(appConfig, i18n),
@@ -194,6 +207,7 @@ async function buildStatus() {
     openingHoursStatus,
     fabAcademyHighlights,
     videos,
+    slides,
     staff,
     selectedStaff,
     currentVideoIndex: safeVideoIndex,
