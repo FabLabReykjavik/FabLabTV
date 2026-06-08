@@ -4,6 +4,7 @@
 
 import fs from "node:fs/promises";
 import path from "node:path";
+
 import { config } from "./config.js";
 import { isLabOpenNow, loadLocalPulseConfig } from "./localPulse.js";
 
@@ -174,16 +175,58 @@ async function getLocalVideoLibrary() {
   }));
 }
 
+function safeCacheName(filename) {
+  return Buffer.from(filename).toString("base64url");
+}
+
+function getPdfCacheDir(filename) {
+  return path.join(config.slideCacheDir, safeCacheName(filename));
+}
+
+async function listCachedPdfPages(filename) {
+  const cacheDir = getPdfCacheDir(filename);
+
+  try {
+    const files = await listFiles(cacheDir, [".png"]);
+    return files.map((file) => ({
+      file,
+      cacheDir
+    }));
+  } catch {
+    return [];
+  }
+}
+
+async function renderPdfToCache(filename) {
+  console.log(`[Slides] PDF rendering not implemented yet: ${filename}`);
+  return [];
+}
+
 export async function getLocalSlideLibrary() {
   const files = await listFiles(config.slidesDir, [
     ".jpg",
     ".jpeg",
     ".png",
     ".webp",
-    ".gif"
+    ".gif",
+    ".pdf"
   ]);
 
-  return files.map((file) => ({
+  const imageFiles = files.filter(
+    (file) => path.extname(file).toLowerCase() !== ".pdf"
+  );
+
+  const pdfFiles = files.filter(
+    (file) => path.extname(file).toLowerCase() === ".pdf"
+  );
+
+  const pdfSlides = [];
+
+  for (const pdfFile of pdfFiles) {
+    //pdef rendering will be added here
+  }
+
+  return imageFiles.map((file) => ({
     id: `slide-${Buffer.from(file).toString("base64url")}`,
     source: "slide",
     title: niceNameFromFilename(file),

@@ -75,6 +75,13 @@ app.use("/media/slides", express.static(config.slidesDir, {
   }
 }));
 
+app.use("/media/slide-cache", express.static(config.slideCacheDir, {
+  fallthrough: true,
+  setHeaders(res) {
+    res.setHeader("Cache-Control", "public, max-age=3600");
+  }
+}));
+
 app.use("/media/staff", express.static(config.staffDir, {
   fallthrough: true,
   setHeaders(res) {
@@ -630,7 +637,7 @@ io.on("connection", async (socket) => {
   socket.emit("status", await buildStatus());
 });
 
-chokidar.watch([config.videosDir, config.staffDir], { ignoreInitial: true })
+chokidar.watch([config.videosDir, config.staffDir, config.slidesDir], { ignoreInitial: true })
   .on("all", async () => {
     await broadcastStatus();
   });

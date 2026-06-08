@@ -15,6 +15,7 @@ export const config = {
   dataDir: path.join(projectRoot, "data"),
   brandingDir: path.join(projectRoot, "branding"),
   localPulseMediaDir: path.join(projectRoot, "data", "local-pulse-media"),
+  slideCacheDir: path.join(projectRoot, "data", "slide-cache"),
 
   videoExtensions: [".mp4", ".webm", ".mov", ".m4v"],
   staffImageExtensions: [".jpg", ".jpeg", ".png", ".webp", ".gif"],
