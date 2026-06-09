@@ -67,6 +67,11 @@ const slidesPerCycle = document.querySelector("#slidesPerCycle");
 const slides = status.slides || [];
 const slideSettings = status.i18n?.slides || {};
 
+const locationName = document.querySelector("#locationName");
+const locationLatitude = document.querySelector("#locationLatitude");
+const locationLongitude = document.querySelector("#locationLongitude");
+const locationTimezone = document.querySelector("#locationTimezone");
+
 const weatherLocation = document.querySelector("#weatherLocation");
 const weatherLatitude = document.querySelector("#weatherLatitude");
 const weatherLongitude = document.querySelector("#weatherLongitude");
@@ -546,6 +551,15 @@ function renderNewsHistory(newsItems) {
   }
 }
 
+function renderLocation(status) {
+  const weather = status.config?.weather || {};
+
+  if (locationName) locationName.value = weather.location || "";
+  if (locationLatitude) locationLatitude.value = weather.latitude ?? "";
+  if (locationLongitude) locationLongitude.value = weather.longitude ?? "";
+  if (locationTimezone) locationTimezone.value = status.config?.timezone || "";
+}
+
 function renderWeather(localConfig) {
   const weather = localConfig.weather || {};
   weatherLocation.value = weather.location || "";
@@ -706,6 +720,7 @@ function render(status) {
   }
 
   renderLanguageControls(status);
+  renderLocation(status);
   renderLocalPulseControls(status);
   renderOpeningHoursStatus(status);
   renderNewsHistory(status.news || []);

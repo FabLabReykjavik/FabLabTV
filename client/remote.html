@@ -22,6 +22,7 @@
         <a href="#branding">Branding</a>
         <a href="#language">Language</a>
         <a href="#date-time">Date &amp; Time</a>
+        <a href="#location">Location</a>
         <a href="#weather">Weather</a>
         <a href="#opening-hours">Opening Hours</a>
         <a href="#local-pulse">Local Pulse</a>
@@ -260,6 +261,20 @@
             Timezone is currently read from data/config.json. A Remote UI timezone picker
             will need a small config save API before it can be edited here.
           </p>
+        </section>
+
+        <section id="location" class="panel">
+          <h2>Location</h2>
+          <p>
+            This is the lab location used by weather, clock, and opening hours.
+          </p>
+
+          <div class="form-grid">
+            <label>Location name<input id="locationName" readonly /></label>
+            <label>Latitude<input id="locationLatitude" readonly /></label>
+            <label>Longitude<input id="locationLongitude" readonly /></label>
+            <label>Timezone<input id="locationTimezone" readonly /></label>
+          </div>
         </section>
 
         <section id="weather" class="panel">
