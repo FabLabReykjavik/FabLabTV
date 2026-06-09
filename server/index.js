@@ -259,7 +259,7 @@ app.post("/api/upload/video", uploadFileToFolder({
 
 app.post("/api/upload/slide", uploadFileToFolder({
   directory: config.slidesDir,
-  allowedExtensions: [".jpg", ".jpeg", ".png", ".webp", ".gif", ".pdf"],
+  allowedExtensions: [".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg", ".pdf"],
   fallbackBase: "slide"
 }));
 

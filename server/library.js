@@ -269,7 +269,8 @@ export async function getLocalSlideLibrary() {
     ".png",
     ".webp",
     ".gif",
-    ".pdf"
+    ".pdf",
+    ".svg"
   ]);
 
   const imageFiles = files.filter(
