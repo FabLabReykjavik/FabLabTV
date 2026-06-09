@@ -13,312 +13,350 @@
       <p>Simple controls for staff.</p>
     </header>
 
-    <section class="panel staff-control-panel">
-      <div class="panel-title-row">
-        <h2>Who is on call?</h2>
+    <div class="remote-dashboard">
+      <nav class="remote-sidebar" aria-label="Remote sections">
+        <a href="#staff">Staff</a>
+        <a href="#now-playing">Now Playing</a>
+        <a href="#tv-playlist">TV Playlist</a>
+        <a href="#uploads">Uploads</a>
+        <a href="#branding">Branding</a>
+        <a href="#language">Language</a>
+        <a href="#date-time">Date &amp; Time</a>
+        <a href="#weather">Weather</a>
+        <a href="#opening-hours">Opening Hours</a>
+        <a href="#local-pulse">Local Pulse</a>
+        <a href="#global-pulse">Global Pulse</a>
+        <a href="#tech-news">Tech News</a>
+      </nav>
 
-        <label class="panel-visibility-toggle">
-          <input id="showStaffToggle" type="checkbox" />
-          <span>Show on TV</span>
-        </label>
-      </div>
-      <p>Select the staff member currently available on the TV. Each staff member can also have saved profile text, such as pronouns, specialties, or support notes.</p>
-      <div id="staffList" class="staff-list"></div>
+      <div class="remote-content">
+        <section id="staff" class="panel staff-control-panel">
+          <div class="panel-title-row">
+            <h2>Who is on call?</h2>
 
-      <button id="showAddStaff" class="secondary reveal-button" type="button">Add staff member</button>
-      <div id="addStaffPanel" class="upload-box add-staff-panel is-hidden">
-        <h3>Add staff member</h3>
-        <p>Upload a staff photo into the local <strong>staff/</strong> folder. The display name is taken from the image filename, and the profile text is saved for this person.</p>
-        <div class="form-grid single">
-          <label>Staff display name<input id="staffUploadName" placeholder="Jane Doe" /></label>
-          <label>Small label next to name<input id="staffUploadStatusLabel" placeholder="On Call, she/her, they/them, Electronics..." /></label>
-          <label>Profile text<textarea id="staffUploadNote" placeholder="Example: Electronics, laser cutting, 3D printing"></textarea></label>
-          <label>Staff image<input id="staffUpload" type="file" accept="image/png,image/jpeg,image/webp" /></label>
-        </div>
-        <button id="uploadStaff" class="secondary" type="button">Add staff member to this TV</button>
-        <p id="staffUploadStatus" class="upload-status"></p>
-      </div>
-    </section>
-
-    <section class="panel video-control-panel">
-      <div class="panel-heading">
-        <div>
-          <h2>Now Playing</h2>
-          <p>Control playback and choose what appears in the TV playlist.</p>
-        </div>
-
-        <label class="panel-visibility-toggle">
-          <input id="showNowPlayingToggle" type="checkbox" />
-          <span>Show Now Playing</span>
-        </label>
-      </div>
-
-      <div class="video-source-box primary-video-sources">
-        <h3>Normal TV playlist</h3>
-        <p class="section-help">Choose what the TV plays automatically. Changes save immediately and videos are always shuffled.</p>
-        <div class="source-toggle-grid">
-          <label class="source-toggle-card">
-            <input id="localVideosEnabled" type="checkbox" />
-            <span>
-              <strong>Local uploaded videos</strong>
-              <small>Videos stored in this FabLabTV project’s local <strong>videos/</strong> folder.</small>
-            </span>
-          </label>
-          <label class="source-toggle-card">
-            <input id="fabHighlightsEnabled" type="checkbox" />
-            <span>
-              <strong>Stream all Fab Academy Highlights</strong>
-              <small>Curated highlight videos from the bundled Fab Academy highlights catalog.</small>
-            </span>
-          </label>
-          <label class="source-toggle-card">
-            <input id="fabHighlightsAfterHoursEnabled" type="checkbox" />
-            <span>
-              <strong>Allow highlights while closed</strong>
-              <small>Use this only when staff are working late and want streaming highlights on after hours.</small>
-            </span>
-          </label>
-          <div class="form-grid single">
-            <label class="source-toggle-card">
-              <input id="slidesEnabled" type="checkbox" />
-              <span>
-                <strong>Enable Slides</strong>
-                <small>Allow images from the slides/ folder to be displayed on the TV.</small>
-              </span>
-            </label>
-            <label>
-              Slide duration seconds
-              <input id="slideDurationSeconds" type="number" min="1" step="1" />
+            <label class="panel-visibility-toggle">
+              <input id="showStaffToggle" type="checkbox" />
+              <span>Show on TV</span>
             </label>
           </div>
+          <p>Select the staff member currently available on the TV. Each staff member can also have saved profile text, such as pronouns, specialties, or support notes.</p>
+          <div id="staffList" class="staff-list"></div>
+
+          <button id="showAddStaff" class="secondary reveal-button" type="button">Add staff member</button>
+          <div id="addStaffPanel" class="upload-box add-staff-panel is-hidden">
+            <h3>Add staff member</h3>
+            <p>Upload a staff photo into the local <strong>staff/</strong> folder. The display name is taken from the image filename, and the profile text is saved for this person.</p>
+            <div class="form-grid single">
+              <label>Staff display name<input id="staffUploadName" placeholder="Jane Doe" /></label>
+              <label>Small label next to name<input id="staffUploadStatusLabel" placeholder="On Call, she/her, they/them, Electronics..." /></label>
+              <label>Profile text<textarea id="staffUploadNote" placeholder="Example: Electronics, laser cutting, 3D printing"></textarea></label>
+              <label>Staff image<input id="staffUpload" type="file" accept="image/png,image/jpeg,image/webp" /></label>
+            </div>
+            <button id="uploadStaff" class="secondary" type="button">Add staff member to this TV</button>
+            <p id="staffUploadStatus" class="upload-status"></p>
+          </div>
+        </section>
+
+        <section id="now-playing" class="panel video-control-panel">
+          <div class="panel-heading">
+            <div>
+              <h2>Now Playing</h2>
+              <p>Controls whether the Now Playing block appears on the TV screen.</p>
+            </div>
+
+            <label class="panel-visibility-toggle">
+              <input id="showNowPlayingToggle" type="checkbox" />
+              <span>Show Now Playing</span>
+            </label>
+          </div>
+
+          <div class="now-playing-remote now-playing-preview">
+            <div class="remote-now-label">Now Playing block on TV</div>
+            <strong>Current video title</strong>
+            <span>Lab or source details</span>
+            <span>Project detail or description</span>
+            <span class="now-playing-meta">This is the block shown or hidden on the TV screen.</span>
+          </div>
+        </section>
+
+        <section id="tv-playlist" class="panel video-control-panel">
+          <h2>TV Playlist</h2>
+          <p>
+            Choose what the TV plays automatically and how local videos, Fab Academy
+            highlights, and slides are mixed.
+          </p>
+
+          <div class="video-source-box primary-video-sources">
+            <h3>Normal TV playlist</h3>
+            <p class="section-help">Choose what the TV plays automatically. Changes save immediately and videos are always shuffled.</p>
+            <div class="source-toggle-grid">
+              <label class="source-toggle-card">
+                <input id="localVideosEnabled" type="checkbox" />
+                <span>
+                  <strong>Local uploaded videos</strong>
+                  <small>Videos stored in this FabLabTV project’s local <strong>videos/</strong> folder.</small>
+                </span>
+              </label>
+              <label class="source-toggle-card">
+                <input id="fabHighlightsEnabled" type="checkbox" />
+                <span>
+                  <strong>Stream all Fab Academy Highlights</strong>
+                  <small>Curated highlight videos from the bundled Fab Academy highlights catalog.</small>
+                </span>
+              </label>
+              <label class="source-toggle-card">
+                <input id="fabHighlightsAfterHoursEnabled" type="checkbox" />
+                <span>
+                  <strong>Allow highlights while closed</strong>
+                  <small>Use this only when staff are working late and want streaming highlights on after hours.</small>
+                </span>
+              </label>
+              <div class="form-grid single">
+                <label class="source-toggle-card">
+                  <input id="slidesEnabled" type="checkbox" />
+                  <span>
+                    <strong>Enable Slides</strong>
+                    <small>Allow images from the slides/ folder to be displayed on the TV.</small>
+                  </span>
+                </label>
+                <label>
+                  Slide duration seconds
+                  <input id="slideDurationSeconds" type="number" min="1" step="1" />
+                </label>
+              </div>
+            </div>
+            <div class="form-grid">
+              <label>
+                Local videos per cycle
+                <input id="localVideosPerCycle" type="number" min="0" step="1" />
+              </label>
+              <label>
+                Highlights per cycle
+                <input id="fabHighlightsPerCycle" type="number" min="0" step="1" />
+              </label>
+              <label>
+                Slides per cycle
+                <input id="slidesPerCycle" type="number" min="0" step="1" />
+              </label>
+            </div>
+            <p id="videoSourcesStatus" class="upload-status auto-save-status"></p>
+            <div class="playlist-status-card" id="highlightPlaybackStatus">
+              <strong>Highlight playback status unknown</strong>
+              <small>Waiting for TV status...</small>
+            </div>
+            <div class="playlist-status-card" id="playlistMixStatus">
+              <strong>Playlist mix unknown</strong>
+              <small>Waiting for TV status...</small>
+            </div>
+            <div class="playlist-status-card" id="playlistInventoryStatus">
+              <strong>Playlist inventory unknown</strong>
+              <small>Waiting for TV status...</small>
+            </div>
+            <div class="playlist-status-card" id="slideInventoryStatus">
+              <strong>Slide inventory unknown</strong>
+              <small>Waiting for TV status...</small>
+            </div>
+          </div>
+
+          <div class="streaming-playlist-box highlight-search-box">
+            <h3>Play one Fab Academy highlight now</h3>
+            <p>Search by student, lab, year, or award. Matching videos appear below; click one to play it once on the TV.</p>
+            <label>Search highlight videos
+              <input id="fabVideoSearch" placeholder="Example: reykjavik, 2025, mechanism..." autocomplete="off" />
+            </label>
+            <div id="fabPlaylistSummary" class="playlist-summary"></div>
+            <div id="fabVideoCatalog" class="fab-video-catalog"></div>
+          </div>
+        </section>
+
+        <section id="uploads" class="panel">
+          <h2>Uploads</h2>
+          <p>Add local media files to this FabLabTV installation.</p>
+
+          <div class="upload-box local-upload-box">
+            <h3>Add a local video</h3>
+            <p>This uploads a video file into this project’s local <strong>videos/</strong> folder. These videos become part of the normal shuffled TV playlist.</p>
+            <input id="videoUpload" type="file" accept="video/mp4,video/webm,video/quicktime,.m4v" />
+            <button id="uploadVideo" class="secondary" type="button">Upload local video to this TV</button>
+            <p id="videoUploadStatus" class="upload-status"></p>
+          </div>
+
+          <div class="upload-box local-upload-box">
+            <h3>Add a slide</h3>
+            <p>
+              Upload images or PDF files into the local
+              <strong>slides/</strong> folder. PDFs are automatically converted
+              into slide pages.
+            </p>
+
+            <input
+              id="slideUpload"
+              type="file"
+              accept=".jpg,.jpeg,.png,.webp,.gif,.svg,.pdf"
+            />
+
+            <button id="uploadSlide" class="secondary" type="button">
+              Upload slide to this TV
+            </button>
+
+            <p id="slideUploadStatus" class="upload-status"></p>
+          </div>
+        </section>
+
+        <section id="branding" class="panel branding-control-panel">
+          <div class="panel-title-row">
+            <h2>Branding & Lab Identity</h2>
+
+            <label class="panel-visibility-toggle">
+              <input id="showLogoToggle" type="checkbox" />
+              <span>Show on TV</span>
+            </label>
+          </div>
+          <p>FabLabTV uses the built-in <strong>branding/fablab.png</strong> logo unless your lab uploads its own logo. Uploaded logos are saved as <strong>branding/logo.png</strong>.</p>
+          <div class="branding-preview-row">
+            <img id="brandingLogoPreview" class="branding-logo-preview" src="/branding/current-logo.png" alt="Current TV logo" />
+            <div class="upload-box inline-upload-box">
+              <h3>Upload lab logo</h3>
+              <p>Transparent PNG works best. This replaces the custom TV logo without changing the default FabLabTV fallback.</p>
+              <input id="logoUpload" type="file" accept="image/png" />
+              <button id="uploadLogo" class="secondary" type="button">Upload logo to TV</button>
+              <p id="logoUploadStatus" class="upload-status"></p>
+            </div>
+          </div>
+        </section>
+
+        <section id="language" class="panel">
+          <h2>Language</h2>
+          <p>Choose the language used for system labels on the TV screen. Staff-written text is not translated automatically.</p>
+          <div class="form-grid single">
+            <label>Screen language<select id="languageSelect"></select></label>
+          </div>
+          <button id="saveLanguage">Save language</button>
+
+          <details class="label-editor-wrap">
+            <summary>Edit translated labels for this language</summary>
+            <p>Use these fields to override wording that does not sound natural for your lab.</p>
+            <div id="labelEditor" class="label-editor"></div>
+            <button id="saveLabels">Save label text</button>
+          </details>
+        </section>
+
+        <section id="date-time" class="panel">
+          <div class="panel-title-row">
+            <h2>Date &amp; Time</h2>
+
+            <label class="panel-visibility-toggle">
+              <input id="showClockToggle" type="checkbox" />
+              <span>Show on TV</span>
+            </label>
+          </div>
+
+          <p>
+            Controls the clock block shown on the TV screen. The clock uses the lab
+            timezone configured for this FabLabTV installation.
+          </p>
+
+          <p class="section-help">
+            Timezone is currently read from data/config.json. A Remote UI timezone picker
+            will need a small config save API before it can be edited here.
+          </p>
+        </section>
+
+        <section id="weather" class="panel">
+          <h2>Local Pulse Weather</h2>
+          <p>Choose the weather location shown in Local Pulse. Use decimal latitude/longitude.</p>
+          <div class="form-grid">
+            <label>Location name<input id="weatherLocation" placeholder="Reykjavik" /></label>
+            <label>Latitude<input id="weatherLatitude" type="number" step="0.0001" placeholder="64.1466" /></label>
+            <label>Longitude<input id="weatherLongitude" type="number" step="0.0001" placeholder="-21.9426" /></label>
+          </div>
+          <button id="saveWeather">Save weather location</button>
+        </section>
+
+        <section id="opening-hours" class="panel">
+          <h2>Opening Hours</h2>
+          <div id="openingHoursStatusCard" class="opening-hours-status-card">
+            <strong id="openingHoursStatusState">Unknown</strong>
+            <div id="openingHoursStatusTime"></div>
+          </div>
+          <p>Leave a day empty to show it as closed.</p>
+          <div id="openingHoursEditor" class="opening-hours-editor"></div>
+          <button id="saveOpeningHours">Save opening hours</button>
+        </section>
+
+        <section id="local-pulse" class="panel">
+          <div class="panel-title-row">
+            <h2>Local Pulse</h2>
+
+            <label class="panel-visibility-toggle">
+              <input id="showLocalPulseToggle" type="checkbox" />
+              <span>Show on TV</span>
+            </label>
+          </div>
+          <p>
+            Add local notices for the TV, such as workshops, events, closures,
+            reminders, visitor information, or anything staff want shown in Local Pulse.
+          </p>
+          <div id="messageList" class="editable-list"></div>
+          <div class="form-grid single">
+            <label>Title<input id="messageTitle" placeholder="Workshop, notice, or reminder" /></label>
+            <label>Message<textarea id="messageBody" placeholder="Example: Intro to laser cutting, Thursday at 16:00"></textarea></label>
+            <label>Optional image<input id="messageImage" type="file" accept="image/png,image/jpeg,image/webp,image/gif" /></label>
+          </div>
+          <button id="addMessage">Add Local Pulse item</button>
+          <p id="messageUploadStatus" class="upload-status"></p>
+        </section>
+
+        <section id="global-pulse" class="panel">
+          <div class="panel-title-row">
+            <h2>Global Pulse</h2>
+
+            <label class="panel-visibility-toggle">
+              <input id="showGlobalPulseToggle" type="checkbox" />
+              <span>Show on TV</span>
+            </label>
+          </div>
+
+          <p>
+            Global Pulse shows stories, announcements, and activity from the wider
+            Fab Lab community around the world. It helps visitors discover projects,
+            labs, and developments beyond your local Fab Lab.
+          </p>
+
+          <p class="section-help">
+            Content is collected automatically. No local configuration is required.
+          </p>
+        </section>
+
+        <section id="tech-news" class="panel">
+          <div class="panel-title-row">
+            <h2>Tech News</h2>
+
+            <label class="panel-visibility-toggle">
+              <input id="showTechNewsToggle" type="checkbox" />
+              <span>Show on TV</span>
+            </label>
+          </div>
+          <div id="newsHistory" class="news-history"></div>
+        </section>
+      </div>
+
+      <aside class="remote-live-panel" aria-label="TV playback controls">
+        <div class="now-playing-remote" id="remoteNowPlaying">
+          <span class="muted">Nothing playing yet</span>
         </div>
-        <div class="form-grid">
-          <label>
-            Local videos per cycle
-            <input id="localVideosPerCycle" type="number" min="0" step="1" />
-          </label>
-          <label>
-            Highlights per cycle
-            <input id="fabHighlightsPerCycle" type="number" min="0" step="1" />
-          </label>
-          <label>
-            Slides per cycle
-            <input id="slidesPerCycle" type="number" min="0" step="1" />
-          </label>
+
+        <div class="remote-video-actions transport-controls live-transport-controls">
+          <button id="previousVideo" class="secondary" type="button" aria-label="Previous video">⏮</button>
+          <button id="pauseVideo" type="button" aria-label="Play or pause">⏯</button>
+          <button id="nextVideo" class="secondary" type="button" aria-label="Next video">⏭</button>
         </div>
-        <p id="videoSourcesStatus" class="upload-status auto-save-status"></p>
-        <div class="playlist-status-card" id="highlightPlaybackStatus">
-          <strong>Highlight playback status unknown</strong>
-          <small>Waiting for TV status...</small>
-        </div>
-        <div class="playlist-status-card" id="playlistMixStatus">
-          <strong>Playlist mix unknown</strong>
-          <small>Waiting for TV status...</small>
-        </div>
-        <div class="playlist-status-card" id="playlistInventoryStatus">
-          <strong>Playlist inventory unknown</strong>
-          <small>Waiting for TV status...</small>
-        </div>
-        <div class="playlist-status-card" id="slideInventoryStatus">
-          <strong>Slide inventory unknown</strong>
-          <small>Waiting for TV status...</small>
-        </div>
-      </div>
 
-      <div class="now-playing-remote" id="remoteNowPlaying">
-        <span class="muted">Nothing playing yet</span>
-      </div>
+        <p id="audioSetupNotice" class="audio-setup-notice is-hidden"></p>
+        <p id="videoCount" class="video-count"></p>
+      </aside>
 
-      <div class="remote-video-actions transport-controls">
-        <button id="previousVideo" class="secondary" type="button">Previous</button>
-        <button id="pauseVideo" type="button">Play / Pause</button>
-        <button id="nextVideo" class="secondary" type="button">Next</button>
-      </div>
-      <p id="audioSetupNotice" class="audio-setup-notice is-hidden"></p>
-      <p id="videoCount" class="video-count"></p>
-
-      <div class="streaming-playlist-box highlight-search-box">
-        <h3>Play one Fab Academy highlight now</h3>
-        <p>Search by student, lab, year, or award. Matching videos appear below; click one to play it once on the TV.</p>
-        <label>Search highlight videos
-          <input id="fabVideoSearch" placeholder="Example: reykjavik, 2025, mechanism..." autocomplete="off" />
-        </label>
-        <div id="fabPlaylistSummary" class="playlist-summary"></div>
-        <div id="fabVideoCatalog" class="fab-video-catalog"></div>
-      </div>
-    </section>
-
-    <section class="panel">
-      <h2>Uploads</h2>
-      <p>Add local media files to this FabLabTV installation.</p>
-
-      <div class="upload-box local-upload-box">
-        <h3>Add a local video</h3>
-        <p>This uploads a video file into this project’s local <strong>videos/</strong> folder. These videos become part of the normal shuffled TV playlist.</p>
-        <input id="videoUpload" type="file" accept="video/mp4,video/webm,video/quicktime,.m4v" />
-        <button id="uploadVideo" class="secondary" type="button">Upload local video to this TV</button>
-        <p id="videoUploadStatus" class="upload-status"></p>
-      </div>
-
-      <div class="upload-box local-upload-box">
-        <h3>Add a slide</h3>
-        <p>
-          Upload images or PDF files into the local
-          <strong>slides/</strong> folder. PDFs are automatically converted
-          into slide pages.
-        </p>
-
-        <input
-          id="slideUpload"
-          type="file"
-          accept=".jpg,.jpeg,.png,.webp,.gif,.svg,.pdf"
-        />
-
-        <button id="uploadSlide" class="secondary" type="button">
-          Upload slide to this TV
-        </button>
-
-        <p id="slideUploadStatus" class="upload-status"></p>
-      </div>
-    </section>
-
-
-    <section class="panel branding-control-panel">
-      <div class="panel-title-row">
-        <h2>Branding & Lab Identity</h2>
-
-        <label class="panel-visibility-toggle">
-          <input id="showLogoToggle" type="checkbox" />
-          <span>Show on TV</span>
-        </label>
-      </div>
-      <p>FabLabTV uses the built-in <strong>branding/fablab.png</strong> logo unless your lab uploads its own logo. Uploaded logos are saved as <strong>branding/logo.png</strong>.</p>
-      <div class="branding-preview-row">
-        <img id="brandingLogoPreview" class="branding-logo-preview" src="/branding/current-logo.png" alt="Current TV logo" />
-        <div class="upload-box inline-upload-box">
-          <h3>Upload lab logo</h3>
-          <p>Transparent PNG works best. This replaces the custom TV logo without changing the default FabLabTV fallback.</p>
-          <input id="logoUpload" type="file" accept="image/png" />
-          <button id="uploadLogo" class="secondary" type="button">Upload logo to TV</button>
-          <p id="logoUploadStatus" class="upload-status"></p>
-        </div>
-      </div>
-    </section>
-
-    <section class="panel">
-      <h2>Language</h2>
-      <p>Choose the language used for system labels on the TV screen. Staff-written messages and workshop text are not translated automatically.</p>
-      <div class="form-grid single">
-        <label>Screen language<select id="languageSelect"></select></label>
-      </div>
-      <button id="saveLanguage">Save language</button>
-
-      <details class="label-editor-wrap">
-        <summary>Edit translated labels for this language</summary>
-        <p>Use these fields to override wording that does not sound natural for your lab.</p>
-        <div id="labelEditor" class="label-editor"></div>
-        <button id="saveLabels">Save label text</button>
-      </details>
-    </section>
-
-    <section class="panel">
-      <div class="panel-title-row">
-        <h2>Date &amp; Time</h2>
-
-        <label class="panel-visibility-toggle">
-          <input id="showClockToggle" type="checkbox" />
-          <span>Show on TV</span>
-        </label>
-      </div>
-
-      <p>
-        Controls the clock block shown on the TV screen. The clock uses the lab
-        timezone configured for this FabLabTV installation.
-      </p>
-
-      <p class="section-help">
-        Timezone is currently read from data/config.json. A Remote UI timezone picker
-        will need a small config save API before it can be edited here.
-      </p>
-    </section>    
-
-    <section class="panel">
-      <h2>Local Pulse Weather</h2>
-      <p>Choose the weather location shown in Local Pulse. Use decimal latitude/longitude.</p>
-      <div class="form-grid">
-        <label>Location name<input id="weatherLocation" placeholder="Reykjavik" /></label>
-        <label>Latitude<input id="weatherLatitude" type="number" step="0.0001" placeholder="64.1466" /></label>
-        <label>Longitude<input id="weatherLongitude" type="number" step="0.0001" placeholder="-21.9426" /></label>
-      </div>
-      <button id="saveWeather">Save weather location</button>
-    </section>
-
-    <section class="panel">
-      <h2>Opening Hours</h2>
-      <div id="openingHoursStatusCard" class="opening-hours-status-card">
-        <strong id="openingHoursStatusState">Unknown</strong>
-        <div id="openingHoursStatusTime"></div>
-      </div>
-      <p>Leave a day empty to show it as closed.</p>
-      <div id="openingHoursEditor" class="opening-hours-editor"></div>
-      <button id="saveOpeningHours">Save opening hours</button>
-    </section>
-
-    <section id="local-messages" class="panel">
-      <div class="panel-title-row">
-        <h2>Local Pulse</h2>
-
-        <label class="panel-visibility-toggle">
-          <input id="showLocalPulseToggle" type="checkbox" />
-          <span>Show on TV</span>
-        </label>
-      </div>
-      <p>
-        Add local notices for the TV, such as workshops, events, closures,
-        reminders, visitor information, or anything staff want shown in Local Pulse.
-      </p>
-      <div id="messageList" class="editable-list"></div>
-      <div class="form-grid single">
-        <label>Title<input id="messageTitle" placeholder="Workshop, notice, or reminder" /></label>
-        <label>Message<textarea id="messageBody" placeholder="Example: Intro to laser cutting, Thursday at 16:00"></textarea></label>
-        <label>Optional image<input id="messageImage" type="file" accept="image/png,image/jpeg,image/webp,image/gif" /></label>
-      </div>
-      <button id="addMessage">Add Local Pulse item</button>
-      <p id="messageUploadStatus" class="upload-status"></p>
-    </section>
-
-    <section class="panel">
-      <div class="panel-title-row">
-        <h2>Global Pulse</h2>
-
-        <label class="panel-visibility-toggle">
-          <input id="showGlobalPulseToggle" type="checkbox" />
-          <span>Show on TV</span>
-        </label>
-      </div>
-
-      <p>
-        Global Pulse shows stories, announcements, and activity from the wider
-        Fab Lab community around the world. It helps visitors discover projects,
-        labs, and developments beyond your local Fab Lab.
-      </p>
-
-      <p class="section-help">
-        Content is collected automatically. No local configuration is required.
-      </p>
-    </section>
-
-    <section class="panel">
-      <div class="panel-title-row">
-        <h2>Tech News</h2>
-
-        <label class="panel-visibility-toggle">
-          <input id="showTechNewsToggle" type="checkbox" />
-          <span>Show on TV</span>
-        </label>
-      </div>
-      <div id="newsHistory" class="news-history"></div>
-    </section>
+    </div>
   </main>
 
   <script src="/socket.io/socket.io.js"></script>
