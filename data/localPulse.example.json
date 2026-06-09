@@ -25,13 +25,5 @@
       "body": "Ask the on-call staff member if you need help.",
       "enabled": true
     }
-  ],
-  "workshops": [
-    {
-      "id": "sample-workshop",
-      "title": "Upcoming workshops",
-      "body": "Add workshops from the remote screen.",
-      "enabled": true
-    }
   ]
 }

@@ -275,26 +275,20 @@
       <button id="saveOpeningHours">Save opening hours</button>
     </section>
 
-    <section class="panel">
+    <section id="local-messages" class="panel">
       <h2>Custom Local Messages</h2>
+      <p>
+        Add local notices for the TV, such as workshops, events, closures,
+        reminders, visitor information, or anything staff want shown in Local Pulse.
+      </p>
       <div id="messageList" class="editable-list"></div>
       <div class="form-grid single">
-        <label>Title<input id="messageTitle" placeholder="Temporary notice" /></label>
-        <label>Message<textarea id="messageBody" placeholder="Message to show on the TV"></textarea></label>
+        <label>Title<input id="messageTitle" placeholder="Workshop, notice, or reminder" /></label>
+        <label>Message<textarea id="messageBody" placeholder="Example: Intro to laser cutting, Thursday at 16:00"></textarea></label>
         <label>Optional image<input id="messageImage" type="file" accept="image/png,image/jpeg,image/webp,image/gif" /></label>
       </div>
-      <button id="addMessage">Add message</button>
+      <button id="addMessage">Add local message</button>
       <p id="messageUploadStatus" class="upload-status"></p>
-    </section>
-
-    <section class="panel">
-      <h2>Upcoming Workshops</h2>
-      <div id="workshopList" class="editable-list"></div>
-      <div class="form-grid single">
-        <label>Title<input id="workshopTitle" placeholder="Intro to laser cutting" /></label>
-        <label>Details<textarea id="workshopBody" placeholder="Thursday at 16:00"></textarea></label>
-      </div>
-      <button id="addWorkshop">Add workshop</button>
     </section>
 
     <section class="panel">

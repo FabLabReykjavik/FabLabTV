@@ -495,38 +495,6 @@ app.delete("/api/local-pulse/messages/:id", async (req, res) => {
   res.json(await buildStatus());
 });
 
-app.post("/api/local-pulse/workshops", async (req, res) => {
-  const current = await loadLocalPulseConfig();
-  const title = cleanText(req.body.title);
-  const body = cleanText(req.body.body);
-
-  if (!title && !body) {
-    return res.status(400).json({ error: "Workshop title or body is required" });
-  }
-
-  await saveLocalPulseConfig({
-    ...current,
-    workshops: [
-      ...(current.workshops || []),
-      { id: createId("workshop"), title: title || "Upcoming workshop", body, enabled: true }
-    ]
-  });
-
-  await broadcastStatus();
-  res.json(await buildStatus());
-});
-
-app.delete("/api/local-pulse/workshops/:id", async (req, res) => {
-  const current = await loadLocalPulseConfig();
-  await saveLocalPulseConfig({
-    ...current,
-    workshops: (current.workshops || []).filter((item) => item.id !== req.params.id)
-  });
-
-  await broadcastStatus();
-  res.json(await buildStatus());
-});
-
 app.put("/api/staff/:filename/profile", async (req, res) => {
   const filename = path.basename(req.params.filename);
   const staff = await getStaffLibrary();

@@ -48,8 +48,7 @@ export const defaultLocalPulse = {
       body: "Ask the on-call staff member if you need help.",
       enabled: true
     }
-  ],
-  workshops: []
+  ]
 };
 
 function mergeLocalPulseConfig(userConfig = {}) {
@@ -69,8 +68,7 @@ function mergeLocalPulseConfig(userConfig = {}) {
       },
       exceptions: userConfig.openingHours?.exceptions || defaultLocalPulse.openingHours.exceptions
     },
-    messages: userConfig.messages || userConfig.announcements || defaultLocalPulse.messages,
-    workshops: userConfig.workshops || userConfig.events || defaultLocalPulse.workshops
+    messages: userConfig.messages || userConfig.announcements || defaultLocalPulse.messages
   };
 }
 
@@ -326,12 +324,12 @@ function normalizeItem(item, type) {
   return {
     id: item.id || `${type}-${item.title || item.body || Date.now()}`,
     type,
-    title: item.title || item.label || (type === "workshop" ? "Upcoming workshop" : "Local Pulse"),
+    title: item.title || item.label || "Local Pulse",
     body: item.body || item.message || item.note || item.when || "",
     imageUrl: item.imageUrl || "",
     startsAt: item.startsAt || null,
     endsAt: item.endsAt || null,
-    priority: item.priority || (type === "workshop" ? 30 : 50)
+    priority: item.priority || 50
   };
 }
 
@@ -349,8 +347,7 @@ export async function getLocalPulse(appConfig = {}, i18nConfig = null) {
   ]);
 
   const managedItems = [
-    ...(localPulseConfig.messages || []).map((item) => normalizeItem(item, "message")),
-    ...(localPulseConfig.workshops || []).map((item) => normalizeItem(item, "workshop"))
+    ...(localPulseConfig.messages || []).map((item) => normalizeItem(item, "message"))
   ].filter(isActive);
 
   const items = [...weatherItems, openingHoursTodayItem, openingHoursWeekItem, ...managedItems]

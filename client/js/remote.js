@@ -83,11 +83,6 @@ const messageTitle = document.querySelector("#messageTitle");
 const messageBody = document.querySelector("#messageBody");
 const addMessage = document.querySelector("#addMessage");
 
-const workshopList = document.querySelector("#workshopList");
-const workshopTitle = document.querySelector("#workshopTitle");
-const workshopBody = document.querySelector("#workshopBody");
-const addWorkshop = document.querySelector("#addWorkshop");
-
 const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
 
 const editableLabelKeys = [
@@ -628,9 +623,6 @@ function renderLocalPulseControls(status) {
   renderEditableList(messageList, localConfig.messages || [], async (id) => {
     await deleteJson(`/api/local-pulse/messages/${encodeURIComponent(id)}`);
   });
-  renderEditableList(workshopList, localConfig.workshops || [], async (id) => {
-    await deleteJson(`/api/local-pulse/workshops/${encodeURIComponent(id)}`);
-  });
 }
 
 function render(status) {
@@ -968,16 +960,6 @@ addMessage.addEventListener("click", async () => {
   if (messageImage) messageImage.value = "";
   if (messageUploadStatus) messageUploadStatus.textContent = imageUrl ? "Message image uploaded." : "";
 });
-
-addWorkshop.addEventListener("click", async () => {
-  await postJson("/api/local-pulse/workshops", {
-    title: workshopTitle.value,
-    body: workshopBody.value
-  });
-  workshopTitle.value = "";
-  workshopBody.value = "";
-});
-
 
 localVideosEnabled?.addEventListener("change", scheduleVideoSourcesSave);
 fabHighlightsEnabled?.addEventListener("change", scheduleVideoSourcesSave);
