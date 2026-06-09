@@ -942,3 +942,25 @@ select[multiple] {
   color: #64748b;
   font-weight: 700;
 }
+
+.location-map-layout {
+  display: grid;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.location-map {
+  min-height: 420px;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+
+.location-map-summary {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: #f8fafc;
+  color: #334155;
+}

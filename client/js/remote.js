@@ -122,6 +122,11 @@ const editableLabelKeys = [
 
 let latestStatus = null;
 
+let locationMapInstance = null;
+let locationMapMarker = null;
+
+let pendingLocationLatLng = null;
+
 async function requestJson(url, options = {}) {
   const response = await fetch(url, {
     headers: { "Content-Type": "application/json" },
@@ -751,6 +756,36 @@ function render(status) {
   }
 }
 
+function getLocationCoordinates() {
+  const latitude = Number(locationLatitude?.value);
+  const longitude = Number(locationLongitude?.value);
+
+  if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
+    return { latitude, longitude };
+  }
+
+  return { latitude: 64.1466, longitude: -21.9426 };
+}
+
+function ensureLocationMap() {
+  if (!window.L || !locationMap || locationMapInstance) return;
+
+  const { latitude, longitude } = getLocationCoordinates();
+
+  locationMapInstance = L.map(locationMap).setView([latitude, longitude], 12);
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: "© OpenStreetMap"
+  }).addTo(locationMapInstance);
+
+  locationMapMarker = L.marker([latitude, longitude]).addTo(locationMapInstance);
+  locationMapInstance.on("click", (event) => {
+    pendingLocationLatLng = event.latlng;
+    locationMapMarker.setLatLng(event.latlng);
+  });
+}
+
 
 saveLanguage?.addEventListener("click", async () => {
   await putJson("/api/i18n/language", {
@@ -881,6 +916,11 @@ saveLocation?.addEventListener("click", async () => {
 openLocationMap?.addEventListener("click", () => {
   renderLocationMapSummary();
   locationMapDialog?.classList.remove("is-hidden");
+  ensureLocationMap();
+
+  setTimeout(() => {
+    locationMapInstance?.invalidateSize();
+  }, 0);
 });
 
 cancelLocationMap?.addEventListener("click", () => {
@@ -888,6 +928,12 @@ cancelLocationMap?.addEventListener("click", () => {
 });
 
 useLocationMap?.addEventListener("click", () => {
+  if (pendingLocationLatLng) {
+    locationLatitude.value = pendingLocationLatLng.lat.toFixed(6);
+    locationLongitude.value = pendingLocationLatLng.lng.toFixed(6);
+    renderLocationMapSummary();
+  }
+
   locationMapDialog?.classList.add("is-hidden");
 });
 

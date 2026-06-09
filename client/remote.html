@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>FabLabTV Remote</title>
   <link rel="stylesheet" href="/css/remote.css" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
 </head>
 <body>
   <main class="remote">
@@ -270,8 +274,10 @@
             <div class="modal-panel">
               <h2 id="locationMapTitle">Choose location on map</h2>
               <p class="section-help">Map picker will be added next.</p>
-              <div id="locationMap" class="location-map-placeholder">
-                <div>
+              <div class="location-map-layout">
+                <div id="locationMap" class="location-map"></div>
+
+                <div class="location-map-summary">
                   <strong>Selected location</strong>
                   <span id="locationMapSummary">Waiting for location...</span>
                 </div>
@@ -391,6 +397,7 @@
     </div>
   </main>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/remote.js"></script>
 </body>
