@@ -731,6 +731,18 @@ function render(status) {
           <small>${status.selectedStaff?.filename === person.filename ? "Currently on call" : "Set as on call"}</small>
         </span>
       </button>
+
+      <input
+        class="replace-staff-photo-input"
+        type="file"
+        accept="image/png,image/jpeg,image/webp"
+        hidden
+      />
+
+      <button class="secondary small choose-staff-photo" type="button">
+        Change picture
+      </button>
+
       <label class="staff-note-label">
         Small label next to name
         <input class="staff-status-label-input" placeholder="On Call, she/her, they/them, Electronics..." value="${escapeHtml(person.statusLabel || "")}" />
@@ -740,14 +752,45 @@ function render(status) {
         <textarea class="staff-note-input" placeholder="Specialties, support notes, short bio...">${escapeHtml(person.note || "")}</textarea>
       </label>
       <div class="staff-card-actions">
-        <button class="secondary small save-staff-note" type="button">Save staff text</button>
-        <button class="small danger delete-staff" type="button">Remove staff member</button>
+        <button class="secondary small save-staff-note" type="button">
+          Save staff text
+        </button>
+        <button class="small danger delete-staff" type="button">
+          Remove staff member
+        </button>
       </div>
       <p class="upload-status staff-note-status"></p>
     `;
 
     card.querySelector(".staff-select-button")?.addEventListener("click", async () => {
       await postJson("/api/on-call", { filename: person.filename });
+    });
+
+    card.querySelector(".choose-staff-photo")?.addEventListener("click", () => {
+      card.querySelector(".replace-staff-photo-input")?.click();
+    });
+
+    card.querySelector(".replace-staff-photo-input")?.addEventListener("change", async (event) => {
+      const statusElement = card.querySelector(".staff-note-status");
+      const file = event.target.files?.[0];
+
+      if (!file) return;
+
+      if (statusElement) statusElement.textContent = "Uploading photo...";
+
+      try {
+        await fetch(`/api/staff/${encodeURIComponent(person.filename)}/photo`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": file.type || "application/octet-stream"
+          },
+          body: file
+        });
+
+        if (statusElement) statusElement.textContent = "Photo replaced.";
+      } catch (error) {
+        if (statusElement) statusElement.textContent = `Upload failed: ${error.message}`;
+      }
     });
 
     card.querySelector(".save-staff-note")?.addEventListener("click", async () => {

@@ -520,7 +520,7 @@ export async function getStaffLibrary() {
       id: `staff-${index}-${Buffer.from(file).toString("base64url")}`,
       name: niceNameFromFilename(file),
       filename: file,
-      imageUrl: `/media/staff/${encodeURIComponent(file)}`,
+      imageUrl: `/media/staff/${encodeURIComponent(file)}?v=${Date.now()}`,
       note: profile.note || "",
       statusLabel: profile.statusLabel || ""
     };

@@ -546,6 +546,39 @@ app.put("/api/staff/:filename/profile", async (req, res) => {
   res.json(await buildStatus());
 });
 
+app.put("/api/staff/:filename/photo", async (req, res) => {
+  const filename = path.basename(req.params.filename);
+  const ext = path.extname(filename).toLowerCase();
+
+  if (!config.staffImageExtensions.includes(ext)) {
+    return res.status(400).json({ error: "Unsupported staff image filename" });
+  }
+
+  const staff = await getStaffLibrary();
+
+  if (!staff.some((person) => person.filename === filename)) {
+    return res.status(400).json({ error: "Unknown staff image filename" });
+  }
+
+  const targetPath = path.join(config.staffDir, filename);
+  const writeStream = fs.createWriteStream(targetPath);
+
+  req.pipe(writeStream);
+
+  req.on("aborted", () => {
+    writeStream.destroy();
+  });
+
+  writeStream.on("error", (error) => {
+    res.status(500).json({ error: error.message });
+  });
+
+  writeStream.on("finish", async () => {
+    await broadcastStatus();
+    res.json(await buildStatus());
+  });
+});
+
 
 app.delete("/api/staff/:filename", async (req, res) => {
   const filename = path.basename(req.params.filename);
