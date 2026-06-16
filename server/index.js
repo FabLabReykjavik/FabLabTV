@@ -25,6 +25,8 @@ import {
   saveVideoSourcesConfig,
   getFabAcademyHighlightsSummary,
   getFabAcademyHighlightById,
+  getNeilProjectPicksSummary,
+  getNeilProjectPickById,
   updateStaffProfile,
   deleteStaffProfile
 } from "./library.js";
@@ -179,13 +181,14 @@ function uploadFileToFolder({ directory, allowedExtensions, fallbackBase, afterU
 }
 
 async function buildStatus() {
-  const [staff, state, appConfig, i18n, videoSources, fabAcademyHighlights, localPulseConfig] = await Promise.all([
+  const [staff, state, appConfig, i18n, videoSources, fabAcademyHighlights, neilProjectPicks, localPulseConfig] = await Promise.all([
     getStaffLibrary(),
     loadState(),
     loadAppConfig(),
     loadI18nConfig(),
     loadVideoSourcesConfig(),
     getFabAcademyHighlightsSummary(),
+    getNeilProjectPicksSummary(),
     loadLocalPulseConfig()
   ]);
 
@@ -222,6 +225,7 @@ async function buildStatus() {
     videoSources,
     openingHoursStatus,
     fabAcademyHighlights,
+    neilProjectPicks,
     videos,
     slides,
     staff,
@@ -324,14 +328,20 @@ app.get("/api/fabacademy-highlights", async (_req, res) => {
   res.json(await getFabAcademyHighlightsSummary());
 });
 
+app.get("/api/neil-project-picks", async (_req, res) => {
+  res.json(await getNeilProjectPicksSummary());
+});
+
 app.put("/api/video-sources", async (req, res) => {
   await saveVideoSourcesConfig({
     localVideos: req.body.localVideos !== false,
     fabAcademyHighlights: req.body.fabAcademyHighlights === true,
+    neilProjectPicks: req.body.neilProjectPicks === true,
     slides: req.body.slides !== false,
     fabAcademyHighlightsAfterHours: req.body.fabAcademyHighlightsAfterHours === true,
     localVideosPerCycle: req.body.localVideosPerCycle,
     fabAcademyHighlightsPerCycle: req.body.fabAcademyHighlightsPerCycle,
+    neilProjectPicksPerCycle: req.body.neilProjectPicksPerCycle,
     slidesPerCycle: req.body.slidesPerCycle
   });
 
@@ -611,6 +621,19 @@ app.post("/api/video/play-highlight", async (req, res) => {
 
   await saveState({ nowPlayingOverride: highlight });
   io.emit("command", { type: "playOnce", video: highlight });
+  await broadcastStatus();
+  res.json(await buildStatus());
+});
+
+app.post("/api/video/play-neil-project-pick", async (req, res) => {
+  const pick = await getNeilProjectPickById(cleanText(req.body.id));
+
+  if (!pick || !pick.url) {
+    return res.status(404).json({ error: "Neil Project Pick video not found" });
+  }
+
+  await saveState({ nowPlayingOverride: pick });
+  io.emit("command", { type: "playOnce", video: pick });
   await broadcastStatus();
   res.json(await buildStatus());
 });

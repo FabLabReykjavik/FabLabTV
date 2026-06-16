@@ -14,6 +14,7 @@ import { isLabOpenNow, loadLocalPulseConfig } from "./localPulse.js";
 const videoSourcesPath = path.join(config.dataDir, "videoSources.json");
 const videoSourcesExamplePath = path.join(config.dataDir, "videoSources.example.json");
 const fabAcademyHighlightsPath = path.join(config.dataDir, "fabAcademyHighlights.json");
+const neilProjectPicksPath = path.join(config.dataDir, "neilProjectPicks.json");
 
 const staffProfilesPath = path.join(config.dataDir, "staffProfiles.json");
 const staffProfilesExamplePath = path.join(config.dataDir, "staffProfiles.example.json");
@@ -21,11 +22,13 @@ const staffProfilesExamplePath = path.join(config.dataDir, "staffProfiles.exampl
 const defaultVideoSources = {
   localVideos: true,
   fabAcademyHighlights: false,
+  neilProjectPicks: false,
   slides: true,
   fabAcademyHighlightsAfterHours: false,
   localVideosPerCycle: 1,
   fabAcademyHighlightsPerCycle: 1,
-  slidesPerCycle: 1
+  neilProjectPicksPerCycle: 1,
+  slidesPerCycle: 1  
 };
 
 function stripExtension(filename) {
@@ -115,10 +118,12 @@ function normalizeVideoSourcesConfig(value = {}) {
   return {
     localVideos: value.localVideos !== false,
     fabAcademyHighlights: value.fabAcademyHighlights === true,
+    neilProjectPicks: value.neilProjectPicks === true,
     slides: value.slides !== false,
     fabAcademyHighlightsAfterHours: value.fabAcademyHighlightsAfterHours === true,
     localVideosPerCycle: normalizeCycleCount(value.localVideosPerCycle),
     fabAcademyHighlightsPerCycle: normalizeCycleCount(value.fabAcademyHighlightsPerCycle),
+    neilProjectPicksPerCycle: normalizeCycleCount(value.neilProjectPicksPerCycle),
     slidesPerCycle: normalizeCycleCount(value.slidesPerCycle)
   };
 }
@@ -140,6 +145,11 @@ async function loadFabAcademyHighlightsCatalog() {
   return Array.isArray(catalog.items) ? catalog.items : [];
 }
 
+async function loadNeilProjectPicksCatalog() {
+  const catalog = await readJsonFile(neilProjectPicksPath, { items: [] });
+  return Array.isArray(catalog.items) ? catalog.items : [];
+}
+
 export async function getFabAcademyHighlightsCatalog() {
   const items = await loadFabAcademyHighlightsCatalog();
   return items.map((item, index) => formatFabAcademyVideo(item, index));
@@ -147,6 +157,13 @@ export async function getFabAcademyHighlightsCatalog() {
 
 export async function getFabAcademyHighlightsSummary() {
   const items = await getFabAcademyHighlightsCatalog();
+  const years = [...new Set(items.map((item) => item.year).filter(Boolean))].sort((a, b) => b - a);
+  const labs = [...new Set(items.map((item) => item.lab).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+  return { items, years, labs };
+}
+
+export async function getNeilProjectPicksSummary() {
+  const items = await getNeilProjectPicksCatalog();
   const years = [...new Set(items.map((item) => item.year).filter(Boolean))].sort((a, b) => b - a);
   const labs = [...new Set(items.map((item) => item.lab).filter(Boolean))].sort((a, b) => a.localeCompare(b));
   return { items, years, labs };
@@ -333,9 +350,40 @@ function formatFabAcademyVideo(item, index) {
   };
 }
 
+function formatNeilProjectPickVideo(item, index) {
+  const labName = niceNameFromFilename(item.lab || "Neil Pick");
+  const title = item.title || item.projectTitle || "Neil Project Pick";
+  const year = Number(item.videoYear || item.sourcePageYear);
+
+  return {
+    id: `neil-project-pick-${item.id || index}`,
+    source: "neil-project-picks",
+    remote: true,
+    title,
+    subtitle: `${labName}${year ? ` • ${year}` : ""}`,
+    detail: item.projectTitle || item.mention || item.section || "Neil Project Pick",
+    url: item.url,
+    lab: item.lab || "",
+    labName,
+    student: item.student || "",
+    mention: item.mention || "",
+    year
+  };
+}
+
 export async function getFabAcademyHighlightById(id) {
   const items = await getFabAcademyHighlightsCatalog();
   return items.find((item) => item.id === id) || null;
+}
+
+export async function getNeilProjectPickById(id) {
+  const items = await getNeilProjectPicksCatalog();
+  return items.find((item) => item.id === id) || null;
+}
+
+export async function getNeilProjectPicksCatalog() {
+  const items = await loadNeilProjectPicksCatalog();
+  return items.map((item, index) => formatNeilProjectPickVideo(item, index));
 }
 
 let shuffledVideoCache = { signature: "", items: [] };
@@ -351,7 +399,7 @@ function shuffleItems(items) {
   return shuffled;
 }
 
-function buildBalancedPlaylist(localVideos, highlightVideos, slides = [], options = {}) {
+function buildBalancedPlaylist(localVideos, highlightVideos, neilProjectPickVideos, slides = [], options = {}) {
   const groups = [
     {
       count: normalizeCycleCount(options.localVideosPerCycle),
@@ -360,6 +408,10 @@ function buildBalancedPlaylist(localVideos, highlightVideos, slides = [], option
     {
       count: normalizeCycleCount(options.fabAcademyHighlightsPerCycle),
       items: shuffleItems(highlightVideos)
+    },
+    {
+      count: normalizeCycleCount(options.neilProjectPicksPerCycle),
+      items: shuffleItems(neilProjectPickVideos)
     },
     {
       count: normalizeCycleCount(options.slidesPerCycle),
@@ -427,21 +479,28 @@ export async function getVideoLibrary() {
       ? await getFabAcademyHighlightsCatalog()
       : [];
 
+  const neilProjectPickVideos =
+    videoSources.neilProjectPicks
+      ? await getNeilProjectPicksCatalog()
+      : [];
+
   const signature = [
     getVideoSignature([
       ...localVideos,
       ...highlightVideos,
+      ...neilProjectPickVideos,
       ...slides
     ]),
     videoSources.localVideosPerCycle,
     videoSources.fabAcademyHighlightsPerCycle,
+    videoSources.neilProjectPicksPerCycle,
     videoSources.slidesPerCycle
   ].join("|");
 
   if (signature !== shuffledVideoCache.signature) {
     shuffledVideoCache = {
       signature,
-      items: buildBalancedPlaylist(localVideos, highlightVideos, slides, videoSources)
+      items: buildBalancedPlaylist(localVideos, highlightVideos, neilProjectPickVideos, slides, videoSources)
     };
   }
 

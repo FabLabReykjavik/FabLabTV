@@ -25,9 +25,13 @@ const slideUploadStatus = document.querySelector("#slideUploadStatus");
 
 const localVideosEnabled = document.querySelector("#localVideosEnabled");
 const fabHighlightsEnabled = document.querySelector("#fabHighlightsEnabled");
+const neilProjectPicksEnabled = document.querySelector("#neilProjectPicksEnabled");
 const fabHighlightsAfterHoursEnabled = document.querySelector("#fabHighlightsAfterHoursEnabled");
+
 const localVideosPerCycle = document.querySelector("#localVideosPerCycle");
 const fabHighlightsPerCycle = document.querySelector("#fabHighlightsPerCycle");
+const neilProjectPicksPerCycle = document.querySelector("#neilProjectPicksPerCycle");
+
 const fabVideoSearch = document.querySelector("#fabVideoSearch");
 const fabVideoCatalog = document.querySelector("#fabVideoCatalog");
 const fabPlaylistSummary = document.querySelector("#fabPlaylistSummary");
@@ -278,6 +282,10 @@ function renderVideoSources(status) {
     fabHighlightsEnabled.checked = sources.fabAcademyHighlights === true;
   }
 
+  if (neilProjectPicksEnabled) {
+    neilProjectPicksEnabled.checked = sources.neilProjectPicks === true;
+  }
+
   if (fabHighlightsAfterHoursEnabled) {
     fabHighlightsAfterHoursEnabled.checked = sources.fabAcademyHighlightsAfterHours === true;
     fabHighlightsAfterHoursEnabled.disabled = sources.fabAcademyHighlights !== true;
@@ -298,6 +306,10 @@ function renderVideoSources(status) {
 
   if (fabHighlightsPerCycle) {
     fabHighlightsPerCycle.value = sources.fabAcademyHighlightsPerCycle ?? 1;
+  }
+
+  if (neilProjectPicksPerCycle) {
+    neilProjectPicksPerCycle.value = sources.neilProjectPicksPerCycle ?? 1;
   }
 
   renderFabVideoCatalog(status.fabAcademyHighlights?.items || []);
@@ -965,6 +977,7 @@ async function saveVideoSourcesNow() {
     await putJson("/api/video-sources", {
       localVideos: localVideosEnabled ? localVideosEnabled.checked : true,
       fabAcademyHighlights: fabHighlightsEnabled ? fabHighlightsEnabled.checked : false,
+      neilProjectPicks: neilProjectPicksEnabled ? neilProjectPicksEnabled.checked : false,
       fabAcademyHighlightsAfterHours: fabHighlightsAfterHoursEnabled
         ? fabHighlightsAfterHoursEnabled.checked
         : false,
@@ -974,6 +987,10 @@ async function saveVideoSourcesNow() {
       fabAcademyHighlightsPerCycle: fabHighlightsPerCycle
         ? Number(fabHighlightsPerCycle.value) || 0
         : 1,
+      neilProjectPicksPerCycle: neilProjectPicksPerCycle
+        ? Number(neilProjectPicksPerCycle.value) || 0
+        : 1,
+
       slides: slidesEnabled ? slidesEnabled.checked : true,
       slidesPerCycle: slidesPerCycle
         ? Number(slidesPerCycle.value) || 0
@@ -1084,11 +1101,13 @@ addMessage?.addEventListener("click", async () => {
 
 localVideosEnabled?.addEventListener("change", scheduleVideoSourcesSave);
 fabHighlightsEnabled?.addEventListener("change", scheduleVideoSourcesSave);
+neilProjectPicksEnabled?.addEventListener("change", scheduleVideoSourcesSave);
 fabHighlightsAfterHoursEnabled?.addEventListener("change", scheduleVideoSourcesSave);
 slidesEnabled?.addEventListener("change", scheduleVideoSourcesSave);
 
 localVideosPerCycle?.addEventListener("change", scheduleVideoSourcesSave);
 fabHighlightsPerCycle?.addEventListener("change", scheduleVideoSourcesSave);
+neilProjectPicksPerCycle?.addEventListener("change", scheduleVideoSourcesSave);
 slidesPerCycle?.addEventListener("change", scheduleVideoSourcesSave);
 
 fabVideoSearch?.addEventListener("input", () => renderFabVideoCatalog());
