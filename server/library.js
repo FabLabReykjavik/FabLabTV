@@ -69,6 +69,7 @@ function normalizeStaffProfiles(value = {}) {
     Object.entries(value).map(([filename, profile]) => [
       filename,
       {
+        name: String(profile?.name || "").trim(),
         note: String(profile?.note || profile?.message || "").trim(),
         statusLabel: String(profile?.statusLabel || profile?.tagline || "").trim()
       }
@@ -93,10 +94,22 @@ export async function updateStaffProfile(filename, profile = {}) {
   if (!safeFilename) return await loadStaffProfiles();
 
   const profiles = await loadStaffProfiles();
+  const existingProfile = profiles[safeFilename] || {};
+
   profiles[safeFilename] = {
-    ...(profiles[safeFilename] || {}),
-    note: String(profile.note || profile.message || "").trim(),
-    statusLabel: String(profile.statusLabel || profile.tagline || "").trim()
+    ...existingProfile,
+    name:
+      profile.name !== undefined
+        ? String(profile.name || "").trim()
+        : existingProfile.name || "",
+    note:
+      profile.note !== undefined || profile.message !== undefined
+        ? String(profile.note || profile.message || "").trim()
+        : existingProfile.note || "",
+    statusLabel:
+      profile.statusLabel !== undefined || profile.tagline !== undefined
+        ? String(profile.statusLabel || profile.tagline || "").trim()
+        : existingProfile.statusLabel || ""
   };
 
   return await saveStaffProfiles(profiles);
@@ -518,7 +531,7 @@ export async function getStaffLibrary() {
 
     return {
       id: `staff-${index}-${Buffer.from(file).toString("base64url")}`,
-      name: niceNameFromFilename(file),
+      name: profile.name || niceNameFromFilename(file),
       filename: file,
       imageUrl: `/media/staff/${encodeURIComponent(file)}?v=${Date.now()}`,
       note: profile.note || "",

@@ -275,6 +275,7 @@ app.post("/api/upload/staff", uploadFileToFolder({
   fallbackBase: "staff",
   afterUpload: async ({ filename, req }) => {
     await updateStaffProfile(filename, {
+      name: cleanText(req.query.name),
       note: cleanText(req.query.note),
       statusLabel: cleanText(req.query.statusLabel)
     });
@@ -539,6 +540,7 @@ app.put("/api/staff/:filename/profile", async (req, res) => {
   }
 
   await updateStaffProfile(filename, {
+    name: cleanText(req.body.name),
     note: cleanText(req.body.note),
     statusLabel: cleanText(req.body.statusLabel)
   });

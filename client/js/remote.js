@@ -744,6 +744,15 @@ function render(status) {
       </button>
 
       <label class="staff-note-label">
+        Staff display name
+        <input
+          class="staff-name-input"
+          placeholder="Staff member name"
+          value="${escapeHtml(person.name || "")}"
+        />
+      </label>
+
+      <label class="staff-note-label">
         Small label next to name
         <input class="staff-status-label-input" placeholder="On Call, she/her, they/them, Electronics..." value="${escapeHtml(person.statusLabel || "")}" />
       </label>
@@ -753,7 +762,7 @@ function render(status) {
       </label>
       <div class="staff-card-actions">
         <button class="secondary small save-staff-note" type="button">
-          Save staff text
+          Save staff profile
         </button>
         <button class="small danger delete-staff" type="button">
           Remove staff member
@@ -795,6 +804,7 @@ function render(status) {
 
     card.querySelector(".save-staff-note")?.addEventListener("click", async () => {
       const statusElement = card.querySelector(".staff-note-status");
+      const nameInput = card.querySelector(".staff-name-input");
       const noteInput = card.querySelector(".staff-note-input");
       const statusLabelInput = card.querySelector(".staff-status-label-input");
 
@@ -802,6 +812,7 @@ function render(status) {
 
       try {
         await putJson(`/api/staff/${encodeURIComponent(person.filename)}/profile`, {
+          name: nameInput?.value?.trim() || "",
           note: noteInput?.value || "",
           statusLabel: statusLabelInput?.value || ""
         });
@@ -1112,15 +1123,41 @@ uploadSlide?.addEventListener("click", async () => {
 
 uploadStaff?.addEventListener("click", async () => {
   const file = staffUpload?.files?.[0];
-  const extension = extensionFromFilename(file?.name) || ".png";
-  const baseName = safeUploadBaseName(staffUploadName?.value, file?.name?.replace(/\.[^.]+$/, "") || "staff");
+  const displayName = String(staffUploadName?.value || "").trim();
+
+  if (!file) {
+    if (staffUploadStatus) {
+      staffUploadStatus.textContent = "Choose a staff photo.";
+    }
+    return;
+  }
+
+  if (!displayName) {
+    if (staffUploadStatus) {
+      staffUploadStatus.textContent = "Enter the staff member's display name.";
+    }
+    staffUploadName?.focus();
+    return;
+  }
+
+  const extension = extensionFromFilename(file.name) || ".png";
+  const fileBase = safeUploadBaseName(
+    file.name.replace(/\.[^.]+$/, ""),
+    "staff"
+  );
+
+  const params = new URLSearchParams({
+    name: displayName,
+    note: staffUploadNote?.value || "",
+    statusLabel: staffUploadStatusLabel?.value || ""
+  });
 
   await uploadFile({
-    endpoint: `/api/upload/staff?note=${encodeURIComponent(staffUploadNote?.value || "")}&statusLabel=${encodeURIComponent(staffUploadStatusLabel?.value || "")}`,
+    endpoint: `/api/upload/staff?${params.toString()}`,
     fileInput: staffUpload,
     statusElement: staffUploadStatus,
     button: uploadStaff,
-    filename: `${baseName}${extension}`
+    filename: `${fileBase}${extension}`
   });
 
   if (staffUploadName) staffUploadName.value = "";

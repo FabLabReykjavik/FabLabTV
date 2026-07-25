@@ -50,9 +50,9 @@
           <button id="showAddStaff" class="secondary reveal-button" type="button">Add staff member</button>
           <div id="addStaffPanel" class="upload-box add-staff-panel is-hidden">
             <h3>Add staff member</h3>
-            <p>Upload a staff photo into the local <strong>staff/</strong> folder. The display name is taken from the image filename, and the profile text is saved for this person.</p>
+            <p>Enter the staff member's display name and upload a profile photo.</p>
             <div class="form-grid single">
-              <label>Staff display name<input id="staffUploadName" placeholder="Jane Doe" /></label>
+              <label>Staff display name<input id="staffUploadName" placeholder="Jane Doe" required /></label>
               <label>Small label next to name<input id="staffUploadStatusLabel" placeholder="On Call, she/her, they/them, Electronics..." /></label>
               <label>Profile text<textarea id="staffUploadNote" placeholder="Example: Electronics, laser cutting, 3D printing"></textarea></label>
               <label>Staff image<input id="staffUpload" type="file" accept="image/png,image/jpeg,image/webp" /></label>
