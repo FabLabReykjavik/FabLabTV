@@ -2,11 +2,57 @@
 
 All notable changes to FabLabTV will be documented in this file.
 
+## [0.3.1] - 2026-07-25
+
+### Added
+
+- Added support for manually entering staff display names during upload.
+- Added support for Unicode staff display names (e.g. `Magnús`, `Þórður`) independent of image filenames.
+
+### Changed
+
+- Staff display names are now stored separately from image filenames.
+- Existing staff display names can now be edited from the Remote UI.
+
+---
+
+## [0.3.0] - 2026-06-16
+
+### Added
+
+#### Location Settings
+
+- Added configurable location settings.
+- Added interactive map picker for selecting location coordinates.
+- Added automatic timezone detection based on the selected location.
+
+#### Opening Hours
+
+- Added support for multiple opening-hour intervals per day.
+
+#### Content
+
+- Added Neil Project Picks video source.
+
+### Changed
+
+- Reorganized the Remote UI into dashboard cards.
+- Moved display visibility controls into dashboard cards.
+- Consolidated the Workshop feature into Local Messages.
+- Improved Now Playing metadata presentation.
+
+### Fixed
+
+- Added support for replacing existing staff photos without recreating staff entries.
+
+---
+
 ## [0.2.0] - 2026-06-08
 
 ### Added
 
 #### Slide System
+
 - Added local `slides/` media folder.
 - Added slide media library support.
 - Added slide inventory and slide count reporting in the Remote UI.
@@ -19,6 +65,7 @@ All notable changes to FabLabTV will be documented in this file.
 - Added slide uploads from the Remote UI.
 
 #### PDF Support
+
 - Added PDF slide support.
 - Added automatic PDF page rendering and caching.
 - Added multi-page PDF support, with each page participating in playlist rotation.
@@ -26,6 +73,7 @@ All notable changes to FabLabTV will be documented in this file.
 - Added Unicode filename support for uploaded slides and cached media.
 
 #### Playlist Controls
+
 - Added configurable playlist mix ratios.
 - Added support for zero playlist ratios.
 - Added playlist inventory reporting.
@@ -33,6 +81,7 @@ All notable changes to FabLabTV will be documented in this file.
 - Added balancing between local videos and Fab Academy Highlights.
 
 #### Screen Layout Controls
+
 - Added clock visibility setting.
 - Added Tech News visibility setting.
 - Added Staff Card visibility setting.
@@ -42,6 +91,7 @@ All notable changes to FabLabTV will be documented in this file.
 - Added centralized screen layout controls in the Remote UI.
 
 #### Opening Hours
+
 - Added opening-hours-aware playback for Fab Academy Highlights.
 - Added after-hours highlight override.
 - Added opening hours status display in the Remote UI.
